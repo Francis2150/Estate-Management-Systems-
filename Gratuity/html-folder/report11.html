@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - Receipts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css-folder/report11.css" />
+ 
+  
+</head>
+<body>
+  <main>
+     <!-- Report 11 Section -->
+    <section id="summary" class="section active">
+      <div class="header">
+        <a href="Ghome.html">Back</a>
+        <a class="paymentbt" href="transactions.html">Payment Page</a>
+        <button type="button" id="toggleBtn">REPORT SUMMARY</button>
+      </div>
+
+      <h2>Report11 Entry</h2>
+
+      <form id="data-form">
+        <div class="double-row">
+          <div class="row">
+            <label for="period">Report11 Reference Date:</label>
+            <input type="month" id="period" required />
+          </div>
+
+         <div class="ID">
+          <label for="pensionID">Pension ID:</label>
+          <input class="ID" type="text" id="pensionID" placeholder="Enter Pension ID" required />
+        </div>
+
+
+          <div class="row">
+            <label for="date">Date:</label>
+            <input type="date" id="date" required />
+          </div>
+        </div>
+
+          <div class="row">
+            <label for="fullName">Deceased Full Name:</label>
+            <input type="text" id="fullName" placeholder="Enter full name" required />
+          </div>
+
+
+       
+
+        <div class="row">
+          <label for="amountReceived">Amount Received:</label>
+          <input type="text" id="amountReceived" placeholder="Amount" required data-type="currency" />
+        </div>
+
+        
+
+        <div class="row">
+          <label for="placeOfWork">Place of Work:</label>
+          <input type="text" id="placeOfWork" placeholder="Enter place of work" required />
+        </div>
+
+        
+        <div class="buttons">
+          <button class="submitbtn" type="submit">Add Record</button>
+          <button class="updatebtn" type="button" id="update-btn">Update Record</button>
+          <button class="deletebtn" type="button" id="delete-btn">Delete Record</button>
+
+        </div>
+        <p id="status"></p>
+      </form>
+    </section>
+
+   
+     <!-- Summary Section -->
+    <section id="report" class="section summary">
+      <div class="header">
+        <button type="button" id="toggleBtnBack">Back to Entry</button>
+      </div>
+
+      <h2>Report 11 Summary</h2>
+
+      <div class="filter-section">
+
+ 
+        
+        <label for="filterPeriod"> Monthly search:</label>
+        <input type="month" id="filterPeriod" />
+        <button id="filterByPeriodBtn">Search by Month</button>
+
+         <br /><br />
+
+        <label for="yearSelect"> Yearly search:</label>
+        <select id="yearSelect">
+          <option value="">-- Select Year --</option>
+        </select>
+        <button id="filterByYearBtn">Search by year</button>
+
+
+
+        <br /><br />
+
+
+        <p>Range search</p>
+        <div class="date-range">
+        <label for="startPeriod">Start Period:</label>
+        <select id="startPeriod">
+          <option value="">-- Select --</option>
+        </select>
+
+        <label for="endPeriod">End Period:</label>
+        <select id="endPeriod">
+          <option value="">-- Select --</option>
+        </select>
+        <button id="filterByRangeBtn">Filter Range</button>
+
+        </div>
+
+
+        
+        <div id="results" style="margin-top:20px;"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="../java-script-folder/inputFormat.js"></script>
+  <script src="../java-script-folder/report11.js"></script>
+  
+  <script src="../java-script-folder/report11Toggle.js"></script>
+   <script src="../java-script-folder/loadReporT.js"></script>
+</body>
+</html>

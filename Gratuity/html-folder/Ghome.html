@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gratuity Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0077ff;
+      --background: #f9fafc;
+      --card-bg: #ffffff;
+      --text-color: #2c3e50;
+      --hover-bg: #eaf1ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr ;
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .card {
+      background-color:green ;
+      
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      padding: 40px 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      background-color: red;
+      transform: translateY(-5px);
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 500;
+      display: block;
+    }
+
+    .card a::after {
+      content: ' →';
+      color: var(--primary);
+      transition: margin-left 0.2s ease;
+    }
+
+    .card:hover a::after {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Gratuity Dashboard</header>
+
+  <div class="container">
+    <div class="card"><a href="report11.html">📊Receipts(Report11)</a></div>
+    <div class="card"><a href="pvEntry.html">🧾 Pv Entry</a></div>
+    <div class="card"><a href="1.5percent.html">💰 1.5% Admin</a></div>
+    <div class="card"><a href="bank-list.html">🏦 Bank List</a></div>
+    <div class="card"><a href="cashbook.html">📒 Cashbook</a></div>
+    <div class="card"><a href="bank-reconciliation.html">🔄 Bank Recon.</a></div>
+  </div>
+
+</body>
+</html>

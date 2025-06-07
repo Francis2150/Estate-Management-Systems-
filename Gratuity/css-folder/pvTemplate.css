@@ -1,0 +1,336 @@
+/* Box sizing reset */
+* {
+  box-sizing: border-box;
+}
+
+/* Base styling for the body */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 0;
+  padding: 10px;
+  background-color: #f4f4f4;
+  max-width: 850px;
+  margin: auto;
+}
+
+/* Main voucher container */
+main {
+  height: 100%;
+  background: #fff;
+  margin-top: 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+.heading {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+  margin-top: 25px;
+}
+
+/* Top section with PV number, date, and cheque number */
+.top-head {
+  font-size: 14px;
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+/* Left side of top-head */
+.top-left {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  row-gap: 5px;
+  width: 90%;
+  padding: 5px;
+}
+
+/* Cheque number block */
+.cheque-no {
+  width: 40%;
+  padding: 5px;
+  margin-left: 100px;
+}
+
+/* Main voucher body container */
+.pv-body {
+  font-size: 14px;
+  background-color: #e8f5e9;
+  border: 2px solid black;
+  min-height: 800px;
+  width: 100%;
+}
+
+/* First section containing particulars and amount */
+.first {
+  display: flex;
+  height: 100%;
+  margin-top: 0;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  margin-bottom: 0;
+}
+
+/* Particulars (left) */
+.first-left {
+  width: 75%;
+}
+
+.main-paticulars-tittle {
+  padding-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+/* Amount (right) */
+.first-right {
+  width: 25%;
+}
+
+.estate-amount-tittle {
+  padding-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  border-bottom: 2px solid black;
+}
+
+/* Particulars detail area */
+.paticulars-details {
+  padding-left: 10px;
+  font-size: 16px;
+  height: 55px;
+  border-right: 2px solid black;
+  margin-bottom: 0;
+}
+
+/* Total amount awarded */
+.amount-awarded {
+  font-weight: bold;
+  font-size: 14px;
+  height: 55px;
+  text-align: right;
+  padding-right: 6px;
+  padding-top: 25px;
+  margin-bottom: 0;
+}
+
+/* Payee section container */
+.payee-box {
+  display: flex;
+  height: 350px;
+  margin-top: 0;
+}
+
+/* Left side of payee box */
+.payee-box-left {
+  display: flex;
+  width: 75%;
+  border-right: 2px solid black;
+}
+
+/* Names of payees box */
+.cheque-name-box {
+  width: 75%;
+  border-right: 2px solid black;
+  border-bottom: 0;
+}
+
+.cheque-name-tittle {
+  padding-top: 15px;
+  height: 14%;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+
+/* Grid for actual payee names */
+.actual-names {
+  display: grid;
+  padding: 10px;
+  width: 100%;
+  height: 300px;
+}
+
+/* Each payee name and retained amounts */
+.cheque-name,
+.retained,
+.retained-amount {
+  height: 86%;
+}
+
+.retained {
+  margin-bottom: 16px;
+}
+
+/* Signature box beside payee names */
+.payee-signature-box {
+  width: 25%;
+}
+
+.payee-signature-tittle {
+  padding-top: 15px;
+  height: 14%;
+  border-bottom: 2px solid black;
+  border-top: 2px solid black;
+  text-align: center;
+}
+
+.payee-signature {
+  height: 86%;
+}
+
+/* Cheque amounts summary area */
+.cheque-amount {
+  width: 25%;
+  border-top: 2px solid black;
+}
+
+/* Individual cheque amounts section */
+.indidual-cheque-amount {
+  margin-top: 45px;
+  height: 77%;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+
+/* Amounts grid */
+.actual-amounts {
+  padding-top: 10px;
+  height: 275px;
+  display: grid;
+  text-align: right;
+  width: 100%;
+  padding-right: 6px;
+}
+
+/* Total cheque amount display */
+.total-cheque-amount {
+  height: 10%;
+  padding-top: 17px;
+  margin-left: 20px;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 6px;
+}
+
+/* Approval section */
+.approval {
+  margin-top: 0;
+}
+
+/* Amount in words section */
+.amount-in-words-box {
+  margin-top: 0;
+  display: flex;
+  border-top: 2px solid black;
+  font-size: 16px;
+}
+
+.amount-in-words-tittle {
+  font-weight: bold;
+  width: 17%;
+  text-align: left;
+  padding: 10px 1px 10px 7px;
+  border-right: none;
+}
+
+.amount-in-words-details {
+  width: 83%;
+  padding: 10px 0px;
+}
+
+/* Checked by and approved by box */
+.checked-box {
+  border-bottom: 2px solid black;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  width: 100%;
+  height: 130px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Checked by name/date/sign layout */
+.checked-by-detail-box {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+}
+
+.checked-by-tittle {
+  padding-left: 5px;
+  padding-top: 14px;
+  display: grid;
+  height: 100%;
+}
+
+.checked-by-details {
+  padding-top: 14px;
+  display: grid;
+  height: 100%;
+}
+
+/* Approval box */
+.approve-box {
+  padding-top: 15px;
+}
+
+.approve {
+  height: 70%;
+  padding-top: 10px;
+  font-weight: bold;
+  padding-left: 10px;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+/* Certification section */
+.certify-box {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  height: 80px;
+  padding-left: 5px;
+  border-bottom: 2px solid black;
+}
+
+/* Witness section */
+.witness-box {
+  height: 80px;
+}
+
+.payment-witness-by {
+  text-align: center;
+}
+
+.witness-details {
+  column-gap: 17px;
+  margin-top: 28px;
+  padding-top: 15px;
+  padding-left: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Witness individual fields */
+.witness-name {
+  margin-right: 10px;
+}
+
+.witness-sign {
+  margin-left: 100px;
+}
+
+.witness-date {
+  margin-left: 30px;
+}

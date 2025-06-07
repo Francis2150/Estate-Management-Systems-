@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Estate Account Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    a.button, button {
+      text-decoration: none;
+      background-color: #6c5ce7;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 150px;
+      text-align: center;
+    }
+
+    a.button:hover,
+    button:hover {
+      background-color: #a29bfe;
+      transform: translateY(-3px);
+    }
+
+    #logout {
+      background-color: #e74c3c;
+      margin-top: 60px;
+    }
+
+    #logout:hover {
+      background-color: #c0392b;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #ccc;
+    }
+
+    footer span {
+      color: #f1c40f;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      a.button, button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script type="module" src="../js/homepage.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Estate Account Management Portal</h1>
+  </header>
+
+  <div class="button-container">
+    <a href="../../Gratuity/html-folder/Ghome.html" class="button">Gratuity</a>
+    <a href="../../Gratuity/html-folder/index.html" class="button">Trust</a>
+    <a href="../../Gratuity/html-folder/index.html" class="button">Estate</a>
+    <a href="../../Gratuity/html-folder/calc.html" class="button">Calculator</a>
+  </div>
+
+  <button id="logout" onclick="window.location.href='logout_page.html'">Logout</button>
+
+  <footer>
+    &copy; 2025 <span>Estate Account Ltd</span> | All rights reserved.
+  </footer>
+
+</body>
+</html>

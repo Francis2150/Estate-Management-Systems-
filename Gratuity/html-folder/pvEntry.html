@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <!-- Custom stylesheet links -->
+  <link rel="stylesheet" href="../css-folder/currency.css"/>
+  <link rel="stylesheet" href="../css-folder/datatable.css"/>
+  <link rel="stylesheet" href="../css-folder/pvInputP.css"/>
+  <link rel="stylesheet" href="../css-folder/inputMessage.css"/>
+  <link rel="stylesheet" href="../css-folder/buttonP.css"/>
+  
+
+  <script src="../java-script-folder/inputValidation.js"></script>
+  <script src="../java-script-folder/inputFormat.js"></script>
+  <script src="../java-script-folder/dexie.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+
+
+  <title>Final Project</title>
+</head>
+<body>
+  <main class="main-content">
+
+    <!-- Form capturing all payment voucher (PV) details onsubmit="return handleFormSubmit(event)"-->
+
+    
+    <form id="entryForm" >
+      
+      <!-- Top input section: general PV details -->
+      <div class="top-most-part">
+        <!-- PV number -->
+        <div class="pv-no">
+          <label for="pvNo">PV No:</label>
+          <input type="text" id="pvNo" placeholder="PV no. here" required />
+        </div>
+
+        <!-- Estate type selection -->
+        <div class="estate-type" style="flex: 1;">
+          <label for="estateType">Estate Type:</label>
+          <select id="estateType" required >
+            <option value="" disabled selected hidden>Select Estate Type</option>
+            <option value="Commuted pension">COMMUTED PENSION</option>
+            <option value="Death gratuity">DEATH GRATUITY</option>
+            <option value="Refund">REFUND</option>
+            <option value="Over Payment">OVER PAYMENT</option>
+            <option value="Retained portion released">RETAINED PORTION RELEASED</option>
+          </select>
+        </div>
+
+        <!-- Total amount awarded -->
+        <div>
+          <label for="amountAwarded">Amount Awarded:</label>
+          <div class="input-container">
+            <span class="currency">GH₵</span>
+            <input type="text" class="amountAwarded" data-type="currency"  placeholder="amount" id="amountAwarded" required />
+          </div>
+        </div>
+
+        <!-- Date of the voucher -->
+        <div class="date">
+          <label for="pvDate">Date:</label>
+          <input type="date" id="pvDate" required />
+        </div>
+      </div>
+
+      <!-- Horizontal rule for separation -->
+      <hr class="hr1" />
+
+      <!-- Middle section: beneficiary and fee details -->
+      <div class="middle-grid">
+        <!-- Deceased name -->
+        <div class="deceased-name">
+          <label for="deceasedName">Deceased Name:</label>
+          <input type="text" placeholder="enter deceased name" id="deceasedName" required />
+        </div>
+
+        <!-- Judicial service fee -->
+        <div>
+          <label for="judicialServiceFee">Judicial Serv. Fee:</label>
+         
+            
+            <input type="text" class="amountAwarded" data-type="currency" placeholder="enter amount GH₵" id="judicialServiceFee"  />
+         
+        </div>
+
+        <!-- Admin fee rate -->
+        <div class="administrativefee" style="flex: 1;">
+          <label for="adminFeeRate">Admin Fee(rate):</label>
+          <select id="adminFeeRate" required type="number" >
+            <option value="" disabled selected hidden>Select rate(%)</option>
+            <option value="1.5">1.5</option>
+            <option value="None">None</option>
+            <option value="2">2</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+
+        <!-- Staff who checked the form -->
+        <div class="checkby">
+          <label class="checked-by-label" for="checkedBy">Checked By:</label>
+          <select id="checkedBy" required>
+            <option class="checked-by-option" value="DORIS DOWUONA">DORIS DOWUONA</option>
+            <option value="IVY BOATENG VIDA">IVY BOATENG VIDA</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Beneficiary cheque details section -->
+      <div class="down-container">
+        <div class="cheques-section">
+          <h1>Beneficiaries</h1>
+
+          <!-- Repeatable blocks for up to 7 cheques -->
+          <!-- Each includes a name and amount field -->
+          <div class="cheque-pair">
+            <label for="cheque1">Cheque 1</label>
+            <input class="cheque-name" id="chequeName1" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount1" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque2">Cheque 2</label>
+            <input class="cheque-name" id="chequeName2" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount2" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque3">Cheque 3</label>
+            <input class="cheque-name" id="chequeName3" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount3" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque4">Cheque 4</label>
+            <input class="cheque-name" id="chequeName4" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount4" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque5">Cheque 5</label>
+            <input class="cheque-name" id="chequeName5" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount5" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque6">Cheque 6</label>
+            <input class="cheque-name" id="chequeName6" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount6" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque7">Cheque 7</label>
+            <input class="cheque-name" id="chequeName7" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount7" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+          <!-- Retained portion details -->
+          <div class="cheque-pair retained">
+            <label for="retained">Retained</label>
+            <input class="retained-entry" type="text" id="retainedDetails" placeholder="Details" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="retainedAmount" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+        </div>
+
+        <!-- Action buttons for managing PVs -->
+        <div class="button-container">
+          <button class="save"
+           type="submit" 
+          >
+           Save
+          </button>
+
+
+          <button class="print" type="button" onclick="saveShowAndPrint()">Print</button>
+          
+          <button class="update" type="button" onclick="updateEntry()">Update</button>
+          <button type="button" onclick="searchEntry()">Search</button>
+          <button type="button" onclick="deleteEntry()">Delete</button>
+          <p>Status: <span id="statusText">Checking...</span></p>
+          <p>Sync Status: <span id="sync_status"></span></p>
+        </div>
+      </div>
+    </form>
+  
+      
+  </main>
+
+<section>
+  <iframe id="previewFrame" src="pvTemplate.html"></iframe>
+</section>
+
+<section class="main-table-content">
+  <h3 style="text-align: center;">Entries Table</h3>
+  <table border="1" id="entryTable">
+    <thead>
+      <tr>
+        <th>PV No</th>
+        <th>Date</th>
+        <th>Amount Awarded</th>
+        <th>Deceased Name</th>
+        <th>Estate Type</th>
+        <th>Judicial Fee</th>
+        <th>Admin Fee Rate(%)</th>
+        <th>Admin Fee</th>
+        <th>Checked By</th>
+        <th>Cheque 1 Name</th>
+        <th>Cheque 1 Amount</th>
+        <th>Cheque 2 Name</th>
+        <th>Cheque 2 Amount</th>
+        <th>Cheque 3 Name</th>
+        <th>Cheque 3 Amount</th>
+        <th>Cheque 4 Name</th>
+        <th>Cheque 4 Amount</th>
+        <th>Cheque 5 Name</th>
+        <th>Cheque 5 Amount</th>
+        <th>Cheque 6 Name</th>
+        <th>Cheque 6 Amount</th>
+        <th>Cheque 7 Name</th>
+        <th>Cheque 7 Amount</th>
+        <th>Retained Details</th>
+        <th>Retained Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+
+
+  <!-- JavaScript file links -->
+  <!-- <script src="../java-script-folder/setInputForPvTem.js"></script> -->
+  <script src="../java-script-folder/firebase-config.js"></script>
+  <script src="../java-script-folder/app2.js"></script>
+
+  
+
+  
+
+  <!-- <script src="../java-script-folder/pvTemplateA.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distribution Calculator</title>
+  
+  <link rel="stylesheet" href="../css-folder/cal.css"/>
+  
+</head>
+<body>
+
+  <h1>Distribution Calculator</h1>
+ 
+  <div class="container">
+    
+    <div class="left">
+    
+    <h2>Fee Deductions</h2>
+    <button onclick="calculateDistribution()">Process</button>
+    <div class="input-group">
+      <label for="principal">Amount Awarded:</label>
+      <input type="text" id="principal" data-type="currency" placeholder="Enter amount">
+    </div>
+    <div class="input-group">
+      <label for="adminFees">Admin. Fees Rate (%):</label>
+      <input type="text" id="adminFees" placeholder="Enter fee rate">
+    </div>
+    <div class="input-group">
+      <label for="judicialservice">Judicial Serv. Fee Rate (%):</label>
+      <input type="text" id="judicialservice" placeholder="Enter rate">
+    </div>
+
+    <h2>Lawyer's Instructions:1 </h2>
+    <div class="input-group">
+      <label for="legalExpenses">Legal Expenses:</label>
+      <input type="text" id="legalExpenses" data-type="currency" placeholder="Enter Legal Expenses">
+    </div>
+    <div class="input-group">
+      <label for="educationalFund">Educational Fund:</label>
+      <input type="text" id="educationalFund" data-type="currency" placeholder="Enter Edu. Fund">
+    </div>
+
+    <h2>Lawyer's Instructions:2</h2>
+    <div class="input-group">
+      <label for="childrenPortion">Children's Portion:</label>
+      <input type="text" id="childrenPortion" placeholder="Enter Fraction">
+    </div>
+    <div class="input-group">
+      <label for="SpousePortion">Spouse Portion:</label>
+      <input type="text" id="SpousePortion" placeholder="Enter Fraction">
+    </div>
+    <div class="input-group">
+      <label for="ParentPortion">Parent Portion:</label>
+      <input type="text" id="ParentPortion" placeholder="Enter Fraction">
+    </div>
+    <div class="input-group">
+      <label for="CustomaryLaw">Customary Law:</label>
+      <input type="text" id="CustomaryLaw" placeholder="Enter Fraction">
+    </div>
+    <div class="input-group">
+      <label for="NumberOfChildren">Number Of Children:</label>
+      <input type="text" id="NumberOfChildren" placeholder="Enter number of Children">
+    </div>
+
+    
+    
+   </div>
+
+   <div class="right">
+     
+     <h2 class="outputcentred">Output</h2>
+  
+    <div class="output" id="outputContainer">
+      <h2>Distribution Results</h2>
+      
+      <p><strong>Administrative Fee:</strong> <span class="amount" id="adminFeeOutput"></span></p>
+      <p><strong>Judicial Service Fee:</strong> <span class="amount underline" id="judicialServiceOutput"></span></p>
+      <p><strong>Total Fees:</strong> <span class="amount underline underline2" id="totalFeesOutput"></span></p><br>
+      <p><strong>Balance after total Fees:</strong> <span class="amount" id="balanceOutput"></span></p>
+      <p><strong>Educational Fund:</strong> <span class="amount" id="educationalFundPortionOutput"></span></p>
+      <p><strong>Legal expenses:</strong> <span class="amount underline" id="Legal expenses"></span></p>
+      <p><strong>Net Balance For Distribution:</strong> <span class="amount underline underline2" id="netbalanceOutput"></span></p><br>
+      <p><strong>Children Portion:</strong> <span class="amount" id="childrenPortionOutput"></span></p>
+      <p><strong>Spouse Portion:</strong> <span class="amount" id="spousePortionOutput"></span></p>
+      <p><strong>Parent Portion:</strong> <span class="amount" id="parentPortionOutput"></span></p>
+      <p><strong>Customary Law Portion:</strong> <span class="amount" id="customaryLawOutput"></span></p>
+      <p><strong>Each Child Portion:</strong> <span class="amount" id="eachChildPortionOutput"></span></p>
+    </div>
+   </div>
+  </div>
+
+  <script src="../java-script-folder/calc.js"></script>
+
+</body>
+</html>

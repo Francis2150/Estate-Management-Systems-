@@ -1,0 +1,237 @@
+/* Basic styling for the body element */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sets a clean, modern sans-serif font */
+  background-color: #f4f4f4; /* Light gray background color */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  background-color: brown; /* Sets a brown background (overrides previous background-color property) */
+}
+
+/* Main content area */
+main {
+  max-width: 1050px; /* Sets a maximum width to the main container */
+  min-width: 900px; /* Ensures the main container does not shrink below 900px */
+  margin: auto; /* Centers the container horizontally */
+  margin-top: 1px; /* Adds a small margin at the top */
+  background-color: #fff; /* White background for the main content */
+  border: 1px solid #000; /* Adds a solid black border */
+  border-radius: 8px; /* Rounds the corners of the container */
+  padding-left: 20px; /* Adds padding on the left */
+  padding-right: 20px; /* Adds padding on the right */
+  padding-top: 10px; /* Adds padding at the top */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow around the container */
+}
+
+.main-content{
+  position: fixed;
+  top: -15px;
+  left: 200px;
+  right: 200px;
+
+  z-index: 1;
+
+}
+
+/* Styling for the top-most section of the layout */
+.top-most-part {
+  display: grid; /* Uses grid layout for better control of the sections */
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* Divides the area into four equal columns */
+  margin-bottom: 10px; /* Adds margin below this section */
+  margin-top: 0px; /* No top margin */
+  padding-top: 5px; /* Adds padding to the top */
+  vertical-align: top; /* Aligns the content to the top */
+  column-gap: 40px; /* Adds space between the columns */
+}
+
+/* Main title styling */
+h1 {
+  margin-top: 5px; /* Adds top margin */
+  font-size: medium; /* Medium font size for the title */
+  text-align: center; /* Centers the title text */
+  display: inline-block; /* Displays title as an inline block */
+  background-color: rgb(240, 236, 230); /* Light background color */
+}
+
+/* Custom styling for specific heading */
+.first-h1 {
+  margin-top: -17px; /* Moves the element slightly up */
+  background-color: #e9ccd4; /* Light pinkish background */
+  min-width: 150px; /* Minimum width */
+  max-width: 200px; /* Maximum width */
+  text-decoration: wavy underline; /* Underlined with a wavy effect */
+}
+
+/* Horizontal rule styling */
+.hr1 {
+  border: 2px solid black; /* Black border for the horizontal line */
+  margin: 1px 0; /* Adds small margin above and below */
+}
+
+/* Flexbox layout for rows */
+.row {
+  display: flex; /* Uses flexbox to align items */
+  flex-wrap: wrap; /* Allows wrapping of items in the row */
+  justify-content: space-between; /* Distributes space between items */
+  margin-bottom: 15px; /* Adds space below each row */
+}
+
+/* Flexbox child elements inside row */
+.row > div {
+  flex: 1 1 45%; /* Each div takes 45% of the space with flexible growth/shrink */
+  margin-bottom: 10px; /* Adds space below each div */
+}
+
+/* Deceased name styling */
+.deceased-name {
+  margin-right: 20px; /* Adds space to the right */
+  max-width: 400px; /* Maximum width */
+}
+
+/* Styling for PV number */
+.pv-no {
+  max-width: 100px; /* Maximum width for PV number */
+  min-width: 85px; /* Minimum width */
+  display: inline-block; /* Displays as an inline block */
+}
+
+/* Date field styling */
+.date {
+  max-width: 150px; /* Maximum width */
+  display: inline-block; /* Displays inline */
+  margin-right: 10px; /* Adds space to the right */
+}
+
+/* Estate type field */
+.estate-type {
+  margin-left: -18px; /* Adds space to the left */
+  min-width: 190px; /* Minimum width for the estate type */
+  max-width: 200px; /* Maximum width */
+  display: inline-block; /* Displays as inline */
+}
+
+/* Amount awarded styling */
+.amountAwarded {
+  margin-left: px;
+  max-width: 150px; /* Maximum width */
+  min-width: 120px; /* Minimum width */
+  display: inline-block; /* Inline block display */
+}
+
+/* Cheque amount field styling */
+.cheque-amount {
+  max-width: 150px; /* Maximum width */
+}
+
+/* Cheque name field styling */
+.cheque-name {
+  max-width: 400px; /* Maximum width */
+}
+
+/* Label styling */
+label {
+  display: block; /* Displays labels as block elements */
+  font-size: 14px; /* Font size for labels */
+  margin-bottom: 5px; /* Adds space below each label */
+  font-weight: 600; /* Makes labels bold */
+}
+
+/* Input and select element styling */
+input, select {
+  width: 100%; /* Makes the input/select elements full width */
+  padding: 6px; /* Adds padding inside the fields */
+  font-size: 17px; /* Font size for input/select text */
+  border: 1px solid #999; /* Light gray border */
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Section for fees and cheques */
+.fees-section,
+.cheques-section {
+  margin-top: 10px; /* Adds space above */
+}
+
+/* Styling for the middle grid (administrative fees and check details) */
+.middle-grid {
+  max-width: 700px; /* Maximum width for the grid */
+  display: grid; /* Uses grid layout */
+  grid-template-columns: 1fr 150px 150px 150px; /* Divides the grid into 4 columns */
+  gap: 10px; /* Adds space between grid items */
+  margin-top: 20px; /* Adds space above */
+}
+
+/* Administrative fee section */
+.administrativefee {
+  margin-left: 20px; /* Adds space to the left */
+  max-width: 150px; /* Maximum width */
+  min-width: 150px; /* Minimum width */
+}
+
+/* Check by section */
+.checkby {
+  margin-left: 20px; /* Adds space to the left */
+  max-width: 500px; /* Maximum width */
+  min-width: 200px; /* Minimum width */
+}
+
+/* Radio button group layout */
+.radio-group {
+  display: flex; /* Uses flexbox for layout */
+  gap: 20px; /* Space between radio buttons */
+  align-items: center; /* Aligns items vertically centered */
+  margin-top: 5px; /* Adds space above */
+}
+
+/* Inline radio buttons */
+.radio-inline label {
+  font-weight: normal; /* Normal weight for radio button labels */
+}
+
+/* Styling for cheque and retained sections */
+.cheque-pair, .retained {
+  display: flex; /* Flexbox layout */
+  gap: 10px; /* Space between items */
+  margin-bottom: 10px; /* Adds space below */
+}
+
+/* Styling for retained items (usually bold and red text) */
+.retained {
+  max-width: 1000px; /* Maximum width */
+  margin-left: 5px; /* Adds space to the left */
+  color: red; /* Red color for emphasis */
+  font-size: 30px; /* Larger font size */
+}
+
+/* Cheque pair inputs */
+.cheque-pair input {
+  flex: 1; /* Makes inputs flexible to take up available space */
+}
+
+/* Layout for the down section (footer section) */
+.down-container {
+  display: grid; /* Grid layout */
+  grid-template-columns: 2fr 1fr; /* Two columns with different sizes */
+  margin-bottom: 150px; /* Adds space below */
+}
+
+/* Responsive design for small screens */
+@media (max-width: 600px) {
+  .row > div {
+    flex: 1 1 100%; /* Makes each div take full width on small screens */
+  }
+
+  /* Stacks cheque-pair elements vertically on small screens */
+  .cheque-pair {
+    flex-direction: column;
+  }
+}
+
+.currency-symbol {
+  font-size: 20px; /* Font size for currency symbol */
+  margin-left: 5px; 
+  margin-right:-7px;/* Adds space to the left */
+}
+
+
+
+
+#previewFrame { width: 100%; height: 200px; border: 1px solid #ccc; display: none; }
