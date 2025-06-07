@@ -8,10 +8,10 @@
 
   <!-- Custom stylesheet links -->
   <link rel="stylesheet" href="../css-folder/currency.css"/>
-  <link rel="stylesheet" href="../css-folder/datatable.css"/>
-  <link rel="stylesheet" href="../css-folder/pvInputP.css"/>
-  <link rel="stylesheet" href="../css-folder/inputMessage.css"/>
-  <link rel="stylesheet" href="../css-folder/buttonP.css"/>
+  
+  <link rel="stylesheet" href="../css-folder/payment.css"/>
+ 
+  <link rel="stylesheet" href="../css-folder/button.css"/>
   
 
   <script src="../java-script-folder/inputValidation.js"></script>
@@ -31,7 +31,7 @@
     <!-- Form capturing all payment voucher (PV) details onsubmit="return handleFormSubmit(event)"-->
 
     
-    <form id="entryForm" >
+    <form id="data-form" >
       
       <!-- Top input section: general PV details -->
       <div class="top-most-part">
@@ -168,6 +168,21 @@
             <input class="cheque-amount" id="chequeAmount7" data-type="currency" type="text" placeholder="Amount" >
           </div>
 
+          
+          <div class="cheque-pair">
+            <label for="cheque7">Cheque 8</label>
+            <input class="cheque-name" id="chequeName8" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount8" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
+         <div class="cheque-pair">
+            <label for="cheque7">Cheque 9</label>
+            <input class="cheque-name" id="chequeName9" type="text" placeholder="Name(s)" >
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount9" data-type="currency" type="text" placeholder="Amount" >
+          </div>
+
           <!-- Retained portion details -->
           <div class="cheque-pair retained">
             <label for="retained">Retained</label>
@@ -177,23 +192,24 @@
           </div>
         </div>
 
+
+    <div class="down-left">
+
+        <p>Pensioneer Details: <span id="pensioneerDetails"></span></p>
+
         <!-- Action buttons for managing PVs -->
         <div class="button-container">
-          <button class="save"
-           type="submit" 
-          >
-           Save
-          </button>
+            <button class="save"
+            type="submit" 
+            >
+            Save
+            </button>
 
+            <button class="print" type="button" onclick="saveShowAndPrint()">Print</button>
+            
+         </div>
+    </div>
 
-          <button class="print" type="button" onclick="saveShowAndPrint()">Print</button>
-          
-          <button class="update" type="button" onclick="updateEntry()">Update</button>
-          <button type="button" onclick="searchEntry()">Search</button>
-          <button type="button" onclick="deleteEntry()">Delete</button>
-          <p>Status: <span id="statusText">Checking...</span></p>
-          <p>Sync Status: <span id="sync_status"></span></p>
-        </div>
       </div>
     </form>
   
@@ -204,54 +220,14 @@
   <iframe id="previewFrame" src="pvTemplate.html"></iframe>
 </section>
 
-<section class="main-table-content">
-  <h3 style="text-align: center;">Entries Table</h3>
-  <table border="1" id="entryTable">
-    <thead>
-      <tr>
-        <th>PV No</th>
-        <th>Date</th>
-        <th>Amount Awarded</th>
-        <th>Deceased Name</th>
-        <th>Estate Type</th>
-        <th>Judicial Fee</th>
-        <th>Admin Fee Rate(%)</th>
-        <th>Admin Fee</th>
-        <th>Checked By</th>
-        <th>Cheque 1 Name</th>
-        <th>Cheque 1 Amount</th>
-        <th>Cheque 2 Name</th>
-        <th>Cheque 2 Amount</th>
-        <th>Cheque 3 Name</th>
-        <th>Cheque 3 Amount</th>
-        <th>Cheque 4 Name</th>
-        <th>Cheque 4 Amount</th>
-        <th>Cheque 5 Name</th>
-        <th>Cheque 5 Amount</th>
-        <th>Cheque 6 Name</th>
-        <th>Cheque 6 Amount</th>
-        <th>Cheque 7 Name</th>
-        <th>Cheque 7 Amount</th>
-        <th>Retained Details</th>
-        <th>Retained Amount</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</section>
 
 
 
-  <!-- JavaScript file links -->
-  <!-- <script src="../java-script-folder/setInputForPvTem.js"></script> -->
-  <script src="../java-script-folder/firebase-config.js"></script>
-  <script src="../java-script-folder/app2.js"></script>
 
   
 
-  
 
-  <!-- <script src="../java-script-folder/pvTemplateA.js"></script> -->
+
+  
 </body>
 </html>

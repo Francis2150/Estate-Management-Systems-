@@ -9,9 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const status = document.getElementById('status');
   const periodInput = document.getElementById('period');
   const dateInput = document.getElementById('date');
-
   const updateBtn = document.getElementById('update-btn');
   const deleteBtn = document.getElementById('delete-btn');
+  const pensionIDInput = document.getElementById('pensionID');
 
   dateInput.value = new Date().toISOString().split('T')[0];
 
@@ -22,7 +22,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const dataFolder = path.join(os.homedir(), 'MyAppDataTwo');
   const filePath = path.join(dataFolder, 'GRATUITY.csv');
-
   const header = ['Pension ID', 'Deceased Name', 'Amount Awarded', 'Workplace', 'Receipt Date', 'Period'];
 
   // Utility: read CSV file into array of objects
@@ -44,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Utility: get input values as object
   function getFormData() {
-    const id = document.getElementById('pensionID').value.trim();
+    const id = pensionIDInput.value.trim();
     const name = document.getElementById('fullName').value.trim();
     const amountInput = document.getElementById('amountReceived').value.trim().replace(/,/g, '');
     const amount = parseFloat(amountInput);
@@ -73,7 +72,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const records = readCSV();
 
-    // Check for existing Pension ID
     if (records.find(r => r.id === data.id)) {
       status.textContent = `❌ Pension ID "${data.id}" already exists. Use update instead.`;
       return;
@@ -129,7 +127,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ❌ DELETE functionality
   deleteBtn.addEventListener('click', () => {
-    const id = document.getElementById('pensionID').value.trim();
+    const id = pensionIDInput.value.trim();
     if (!id) {
       status.textContent = '❗ Enter Pension ID to delete.';
       return;
@@ -150,5 +148,24 @@ window.addEventListener('DOMContentLoaded', () => {
     dateInput.value = new Date().toISOString().split('T')[0];
     periodInput.value = savedPeriod || '';
   });
-});
 
+  // 🔎 Auto-fill form when Pension ID exists
+  pensionIDInput.addEventListener('blur', () => {
+    const id = pensionIDInput.value.trim();
+    if (!id) return;
+
+    const records = readCSV();
+    const record = records.find(r => r.id === id);
+
+    if (record) {
+      document.getElementById('fullName').value = record.name;
+      document.getElementById('amountReceived').value = parseFloat(record.amount).toLocaleString();
+      document.getElementById('placeOfWork').value = record.workPlace;
+      dateInput.value = record.date;
+      periodInput.value = record.period;
+      status.textContent = `ℹ️ Record found for ID: ${id}. Fields populated.`;
+    } else {
+      status.textContent = `❌ No record found for ID: ${id}`;
+    }
+  });
+});
