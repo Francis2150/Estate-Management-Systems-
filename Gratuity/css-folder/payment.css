@@ -9,8 +9,8 @@ body {
 
 /* Main content area */
 main {
-  max-width: 1300px; /* Sets a maximum width to the main container */
-  min-width: 1000px; /* Ensures the main container does not shrink below 900px */
+  max-width: 1400px; /* Sets a maximum width to the main container */
+  min-width: 1300px; /* Ensures the main container does not shrink below 900px */
   margin: auto; /* Centers the container horizontally */
   margin-top: 3px; /* Adds a small margin at the top */
   background-color: #fff; /* White background for the main content */
@@ -27,7 +27,7 @@ main {
 /* Styling for the top-most section of the layout */
 .top-most-part {
   display: grid; /* Uses grid layout for better control of the sections */
-  grid-template-columns: 1fr 1fr 1fr 1fr; /* Divides the area into four equal columns */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* Divides the area into four equal columns */
   margin-bottom: 10px; /* Adds margin below this section */
   margin-top: 0px; /* No top margin */
   padding-top: 5px; /* Adds padding to the top */
@@ -79,6 +79,13 @@ h1 {
   max-width: 400px; /* Maximum width */
 }
 
+/* Styling for the pension number field */
+.pension-id {
+  max-width: 160px; /* Maximum width for pension number */
+  min-width: 100px; /* Minimum width */
+  display: inline-block; /* Displays as an inline block */
+}
+
 /* Styling for PV number */
 .pv-no {
   max-width: 100px; /* Maximum width for PV number */
@@ -122,7 +129,7 @@ h1 {
 /* Label styling */
 label {
   display: block; /* Displays labels as block elements */
-  font-size: 14px; /* Font size for labels */
+  font-size: 17px; /* Font size for labels */
   margin-bottom: 5px; /* Adds space below each label */
   font-weight: 600; /* Makes labels bold */
 }
@@ -142,9 +149,17 @@ input, select {
   margin-top: 10px; /* Adds space above */
 }
 
-/* Styling for the middle grid (administrative fees and check details) */
-.middle-grid {
-  max-width: 700px; /* Maximum width for the grid */
+.master-middle-grid {
+  min-width: 1000px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+}
+
+
+
+/* Styling for the middle grid left*/
+.middle-grid-left {
+ 
   display: grid; /* Uses grid layout */
   grid-template-columns: 1fr 150px 150px 150px; /* Divides the grid into 4 columns */
   gap: 10px; /* Adds space between grid items */
@@ -157,6 +172,46 @@ input, select {
   max-width: 150px; /* Maximum width */
   min-width: 150px; /* Minimum width */
 }
+
+
+
+/* Administrative fee section */
+.fee-amount {
+  background-color: rgb(241, 36, 36);
+  font-size: large;
+  margin-left: 60px; /* Adds space to the left */
+  max-width: 250px; /* Maximum width */
+  min-width: 200px; /* Minimum width */
+}
+
+
+
+
+/* style for admin fee box*/
+.feebox {
+  border: 3px solid rgb(52, 41, 41);
+  padding: 2px ;
+  font-size: large;
+  font-weight: bold;
+  background-color: rgb(249, 226, 92);
+  height: 35px; 
+}
+
+/* Styling for the middle grid right*/
+.middle-grid-right {
+  
+  display: grid; /* Uses grid layout */
+  grid-template-columns: 0.7fr 1fr 1fr; /* Two equal columns */
+ 
+  margin-top: 20px; /* Adds space above */
+}
+
+
+
+/* style for admin fee box*/
+
+
+
 
 /* Check by section */
 .checkby {
@@ -201,18 +256,61 @@ input, select {
 /* Layout for the down section (footer section) */
 .down-container {
   display: grid; /* Grid layout */
-  grid-template-columns: 2fr 1fr; /* Two columns with different sizes */
+  grid-template-columns: 1.7fr 1fr; /* Two columns with different sizes */
   margin-bottom: 150px; /* Adds space below */
 }
 
 
 .down-left {
-  background-color: #765c5c;
+  margin-top: 0px; /* No top margin */
+  background-color: #d9caca;
   display: grid;/* Adds space to the left */
-  grid-template-rows: 1fr 1fr; /* Two equal rows */
+  grid-template-rows: 2fr 1fr; /* Two equal rows */
+}
+
+.detail {
+border-bottom: 4px solid black; /* Adds a solid black border at the bottom */
+
+  
+}
+.detail-cobtainer {
+  margin-left: 5px;
+  
+}
+
+.detail-header {
+  margin-bottom: 5px; /*  margin */
+  margin-top: 5px;
+  text-align: center;
+  text-decoration: underline;
 }
 
 
+#pensioneerDetails {
+  background-color: rgb(249, 226, 92);
+      margin-top: 15px;
+      margin-bottom: 15px;
+      display: none;/* pendign */
+    }
+
+
+
+   .detail-label {
+    margin-bottom: 100px;
+    width: 50%;
+    margin-right: 15px;
+    font-weight: bold; /* Makes the labelbold */
+    font-size: 24px; /* Sets a larger font size */
+  } 
+
+
+
+
+.Adetail {
+  margin-bottom: 15px;
+  width: 50%;
+  font-size: 25px;
+  }
 
 
 /* Responsive design for small screens */

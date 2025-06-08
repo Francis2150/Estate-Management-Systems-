@@ -44,6 +44,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+ document.addEventListener('DOMContentLoaded', () => {
+      function formatCurrencyValue(value) {
+        if (!value) return "0.00";
+
+        value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
+
+        let parts = value.split(".");
+        let integerPart = parts[0];
+        let decimalPart = parts[1] || "";
+
+        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        decimalPart = decimalPart.substring(0, 2);
+        if (decimalPart.length === 1) decimalPart += "0";
+        if (decimalPart.length === 0) decimalPart = "00";
+
+        return `${integerPart}.${decimalPart}`;
+      }
+
+      // Format display-only elements
+      document.querySelectorAll('[data-display="currency"]').forEach(el => {
+        const raw = el.textContent || el.innerText;
+        el.textContent = formatCurrencyValue(raw);
+      });
+    });
+
+
+
+
 /***********************************************
  * 💵 ADVANCED FORMATTING WITH "₵" AND DECIMALS
  ***********************************************/
