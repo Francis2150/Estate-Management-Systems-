@@ -1,7 +1,7 @@
 /* Container for all the buttons using CSS Grid layout */
 .button-container {
   display: grid; /* Uses grid to layout buttons in a structured format */
-  grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+  grid-template-columns: 1fr 1fr 1fr; /* Two columns of equal width */
   column-gap: 20px; /* Horizontal space between columns */
 
   margin-left: 20px; /* Adds space to the left of the container */
@@ -33,7 +33,16 @@ button {
   cursor: pointer;
 }
 
-
+.home {
+  color: white;
+  text-align: center;
+  padding: 5px; /* Adds space inside the button */
+  width: 150px; /* Fixed width for uniformity */
+  height: 40px; /* Fixed height for uniformity */
+  border-radius: 5px; /* Slightly rounded corners */
+  background-color: rgb(13, 230, 212); /* Green background */
+  text-decoration: none;
+}
 
 
 
