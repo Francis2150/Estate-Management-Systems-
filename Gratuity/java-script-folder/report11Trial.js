@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const dataFolder = path.join(os.homedir(), 'MyAppDataTwo');
-  const filePath = path.join(dataFolder, 'GRATUITY.csv');
+  const filePath = path.join(dataFolder, 'GRATUITYTRIAL.csv');
 
   // Build header with fixed and dynamic columns
   const header = [

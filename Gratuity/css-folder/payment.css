@@ -103,8 +103,8 @@ h1 {
 /* Estate type field */
 .estate-type {
   margin-left: -18px; /* Adds space to the left */
-  min-width: 190px; /* Minimum width for the estate type */
-  max-width: 200px; /* Maximum width */
+  min-width: 200px; /* Minimum width for the estate type */
+  max-width: 250px; /* Maximum width */
   display: inline-block; /* Displays as inline */
 }
 
