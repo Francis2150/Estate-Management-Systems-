@@ -1,0 +1,24 @@
+.overlay-error {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  background: red;
+  color: white;
+  padding: 20px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.overlay-error .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  background: transparent;
+}

@@ -1,31 +1,26 @@
-// Required modules
-const fs = require('fs'); // File system module to read/write CSV file
-const path = require('path'); // Path module for handling file paths
-const os = require('os'); // OS module to get user's home directory
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
-// Formats a number as currency (e.g., 1200.5 → "1,200.50")
+// Format number as currency (e.g., 1234.5 → "1,234.50")
 function formatCurrencyValue(value) {
   if (value == null || value === "") return "0.00";
-  value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, ""); // Remove commas and non-digit chars
-
+  value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
   let parts = value.split(".");
   let integerPart = parts[0];
   let decimalPart = parts[1] || "";
-
-  // Format integer part with commas
   integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   decimalPart = decimalPart.substring(0, 2);
   if (decimalPart.length === 1) decimalPart += "0";
   if (decimalPart.length === 0) decimalPart = "00";
-
   return `${integerPart}.${decimalPart}`;
 }
 
-// Paths to data folder and CSV file
+// Paths for CSV file
 const dataFolder = path.join(os.homedir(), 'MyAppDataTwo');
 const dataFile = path.join(dataFolder, 'GRATUITY.csv');
 
-// DOM elements
+// DOM Elements
 const form = document.getElementById('paymentForm');
 const searchIDInput = document.getElementById('pensionId');
 const pensionerDetailsDiv = document.getElementById('pensioneerDetails');
@@ -38,39 +33,45 @@ const result = document.getElementById('result');
 const adminFeeAmount = document.getElementById('adminFeeAmount');
 const adminFeeRateInput = document.getElementById('adminFeeRate');
 const EstateTypeInput = document.getElementById('estateType');
+const liveBalanceDisplay = document.getElementById('liveBalance');
+const LiveBalancelable = document.getElementById('LiveBalancelable');
 
-// State variables
-let Record = null; // Holds current record found
-let isFirstDisbursement = false; // Flags if this is the first disbursement
+let Record = null;
+let isFirstDisbursement = false;
 
-// Check if CSV file exists
-if (!fs.existsSync(dataFile)) {
-  result.textContent = "Appropriate folders and files have not been created yet.";
+// Show diagonal error overlay for 4 seconds
+function showErrorOverlay() {
+  const overlay = document.getElementById('overlayError');
+  if (overlay) {
+    overlay.style.display = 'block';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 400);
+  }
 }
 
-// Debounce utility to limit how often search runs
+// Debounce function for smoother input handling
 function debounce(func, wait) {
   let timeout;
-  return function(...args) {
+  return function (...args) {
     clearTimeout(timeout);
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
 
-// Searches for pensioner by ID
+// Search pensioner by ID
 function searchPensioner() {
   const pensionID = searchIDInput.value.trim();
-
   if (!pensionID) {
-    // Clear UI if search box is empty
     status.textContent = "";
     adminFeeAmount.textContent = "";
+    LiveBalancelable.textContent = "Live Balance:";
+    liveBalanceDisplay.textContent = "0.00";
     pensionerDetailsDiv.style.display = 'none';
     Record = null;
     return;
   }
 
-  // Read and parse CSV
   const content = fs.readFileSync(dataFile, 'utf-8');
   const lines = content.trim().split('\n');
   const headers = lines[0].split(',');
@@ -78,13 +79,10 @@ function searchPensioner() {
   Record = null;
   isFirstDisbursement = false;
 
-  // Search for pension ID
   for (let i = 1; i < lines.length; i++) {
     const row = lines[i].split(',');
     if (row[0] === pensionID) {
       const totalDisbursed = parseFloat(row[209]) || 0;
-
-      // Create record object
       Record = {
         id: row[0],
         name: row[1],
@@ -96,61 +94,116 @@ function searchPensioner() {
         lineIndex: i,
         rowData: row
       };
-
-      // Check if first disbursement (columns 6-25 empty)
       isFirstDisbursement = row.slice(6, 26).every(cell => cell.trim() === '');
       break;
     }
   }
 
   if (!Record) {
-    // No match found
     status.textContent = "No record found.";
+    adminFeeAmount.textContent = "0.00";
+    liveBalanceDisplay.textContent = "0.00";
     pensionerDetailsDiv.style.display = 'none';
   } else {
-    // Display found record
-    status.textContent = "Record found.";
+    status.textContent = "Record found successfully.";
+    adminFeeAmount.textContent = "0.00";
     pensioneerName.textContent = ` ${Record.name}`;
     amountAwarded.textContent = formatCurrencyValue(Record.originalAmount);
     totalDisbursedDisplay.textContent = formatCurrencyValue(Record.totalDisbursed);
     balanceDisplay.textContent = formatCurrencyValue(Record.balance);
     pensionerDetailsDiv.style.display = 'block';
-
-    // Calculate admin fee based on selected rate
     calculateAdminFee();
+    updateLiveBalance();
   }
 }
 
-// Calculates admin fee based on percentage and estate type
+// Recalculate admin fee based on estate type and rate
 function calculateAdminFee() {
   if (!Record) return;
-
   let rate = parseFloat(adminFeeRateInput.value);
   const estateType = EstateTypeInput.value.trim().toUpperCase();
-
-  // Excluded types where no admin fee should be applied
   const excludedTypes = ["RETAINED PORTION RELEASED", "OVER PAYMENT", "REFUND"];
-
   if (excludedTypes.includes(estateType)) {
     adminFeeAmount.textContent = formatCurrencyValue(0);
     return;
   }
-
   if (isNaN(rate)) rate = 0;
-
-  // Compute fee as % of original award
   let fee = Record.originalAmount * (rate / 100);
   fee = Math.round(fee * 100) / 100;
-
   adminFeeAmount.textContent = formatCurrencyValue(fee);
 }
 
-// Event listeners
-searchIDInput.addEventListener('input', debounce(searchPensioner, 300));
-adminFeeRateInput.addEventListener('change', calculateAdminFee);
-EstateTypeInput.addEventListener('change', calculateAdminFee);
+// Calculate total disbursement and update live balance
+function updateLiveBalance() {
+  if (!Record) return;
 
-// Form submission handler
+  // Get inputs
+  let judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
+  let adminFee = parseFloat(adminFeeAmount.textContent.replace(/,/g, '')) || 0;
+  let chequeTotal = 0;
+
+  for (let i = 1; i <= 9; i++) {
+    const amountInput = document.getElementById(`chequeAmount${i}`);
+    if (amountInput) {
+      let amount = parseFloat(amountInput.value.replace(/,/g, '')) || 0;
+      chequeTotal += amount;
+    }
+  }
+
+  // Calculate potential disbursement
+  const potentialDisbursement = chequeTotal + judicialFee + adminFee;
+  const updatedBalance = Record.balance - potentialDisbursement;
+
+  // Show error if balance exceeded
+  const overlay = document.getElementById('overlayError');
+  if (updatedBalance < 0) {
+    const exceededAmount = formatCurrencyValue(Math.abs(updatedBalance));
+    overlay.textContent = `❌ OVER PAYMENT BY GHS ${exceededAmount}`;
+    overlay.style.display = 'block';
+
+    // Hide after 3 seconds
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 7000);
+  }
+
+  // Show live balance (never below 0)
+  liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance < 0 ? 0 : updatedBalance);
+
+  // Update label
+  const label = document.getElementById('LiveBalancelable');
+  if (Record.originalAmount === updatedBalance) {
+    label.textContent = "Unclaimed:";
+  } else {
+    label.textContent = "Retain :";
+  }
+}
+
+
+
+// Event listeners
+
+
+searchIDInput.addEventListener('input', debounce(searchPensioner, 300));
+document.getElementById('judicialServiceFee').addEventListener('input', updateLiveBalance);
+adminFeeRateInput.addEventListener('input', () => {
+  calculateAdminFee();
+  updateLiveBalance();
+});
+EstateTypeInput.addEventListener('input', () => {
+  calculateAdminFee();
+  updateLiveBalance();
+});
+for (let i = 1; i <= 9; i++) {
+  const amountInput = document.getElementById(`chequeAmount${i}`);
+  if (amountInput) {
+    amountInput.addEventListener('input', updateLiveBalance);
+  }
+}
+
+// Submit form to save disbursement to CSV
+let pendingDisbursement = null;
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -162,33 +215,30 @@ form.addEventListener('submit', (e) => {
   const disburseDate = document.getElementById('disburseDate').value;
   const pvNo = document.getElementById('pvNo').value.trim();
   const judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
-  const adminFee = parseFloat(document.getElementById('adminFeeAmount').textContent.replace(/,/g, '')) || 0;
+  const adminFee = parseFloat(adminFeeAmount.textContent.replace(/,/g, '')) || 0;
 
-  // Ensure required fields are provided
   if (!disburseDate || !pvNo) {
     result.textContent = "Please enter both the PV No and disbursement date.";
     return;
   }
 
-  // Gather cheque data
   const chequeData = [];
   let chequeTotal = 0;
+  let chequeSummaryHTML = '';
 
   for (let i = 1; i <= 9; i++) {
     const nameInput = document.getElementById(`chequeName${i}`);
     const amountInput = document.getElementById(`chequeAmount${i}`);
     const name = nameInput?.value.trim() || "";
-    let amountRaw = amountInput?.value.replace(/,/g, '') || "";
-    const amount = parseFloat(amountRaw) || 0;
+    const amount = parseFloat(amountInput?.value.replace(/,/g, '') || 0);
 
-    chequeData.push(name); // Push name
-    chequeData.push(amount > 0 ? amount.toFixed(2) : ""); // Push amount or empty
+    chequeData.push(name);
+    chequeData.push(amount > 0 ? amount.toFixed(2) : "");
     chequeTotal += amount;
-  }
 
-  if (chequeTotal === 0) {
-    result.textContent = "Please enter at least one cheque amount.";
-    return;
+    if (name || amount > 0) {
+      chequeSummaryHTML += `<div>Cheque ${i}: ${name} - GHS ${formatCurrencyValue(amount)}</div>`;
+    }
   }
 
   const totalDisbursedAmount = chequeTotal + judicialFee + adminFee;
@@ -197,15 +247,47 @@ form.addEventListener('submit', (e) => {
 
   if (newTotalDisbursed > Record.originalAmount) {
     result.textContent = "Disbursement exceeds original amount.";
+    showErrorOverlay();
     return;
   }
 
-  // Update record line in CSV
+  // Save pending data to global var for confirmation
+  pendingDisbursement = {
+    pvNo, disburseDate, chequeData, chequeTotal, judicialFee, adminFee,
+    newTotalDisbursed, newBalance
+  };
+
+  // Build confirmation modal content
+  const confirmationContent = `
+    <strong>PV No:</strong> ${pvNo}<br/>
+    <strong>Deceased Name:</strong> ${Record.name}<br/>
+    <strong>Disbursement Date:</strong> ${disburseDate}<br/>
+    <strong>Estate Type:</strong> ${EstateTypeInput.value}<br/>
+    <strong>Admin Fee Rate:</strong> ${adminFeeRateInput.value}%<br/>
+    
+    <strong>Admin Fee:</strong> GHS ${formatCurrencyValue(adminFee)}<br/>
+    <strong>Judicial Fee:</strong> GHS ${formatCurrencyValue(judicialFee)}<br/>
+    <strong>Cheque Total:</strong> GHS ${formatCurrencyValue(chequeTotal)}<br/>
+    <strong>Current Disbursement Total:</strong> GHS ${formatCurrencyValue(totalDisbursedAmount)}<br/>
+   
+    <strong>Retained Portion:</strong> GHS ${formatCurrencyValue(newBalance)}<br/>
+    <hr/>
+    ${chequeSummaryHTML}
+  `;
+
+  document.getElementById('confirmationContent').innerHTML = confirmationContent;
+  document.getElementById('confirmationModal').style.display = 'flex';
+});
+
+
+  // Update fields
+ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
+  if (!pendingDisbursement) return;
+
   const content = fs.readFileSync(dataFile, 'utf-8');
   const lines = content.trim().split('\n');
   const recordLine = lines[Record.lineIndex].split(',');
 
-  // Find the next empty disbursement slot
   let disbursementCount = 0;
   for (let i = 6; i < 206; i += 20) {
     if (recordLine[i]?.trim()) disbursementCount++;
@@ -213,34 +295,32 @@ form.addEventListener('submit', (e) => {
   }
 
   const newStartIndex = 6 + disbursementCount * 20;
-
   if (newStartIndex + 20 > 205) {
     result.textContent = "Maximum number of disbursements reached.";
+    document.getElementById('confirmationModal').style.display = 'none';
     return;
   }
 
-  // Fill new disbursement fields
+  const { pvNo, disburseDate, chequeData, chequeTotal, judicialFee, adminFee, newTotalDisbursed, newBalance } = pendingDisbursement;
+
   recordLine[newStartIndex] = pvNo;
   recordLine[newStartIndex + 1] = disburseDate;
-
   for (let i = 0; i < 18; i++) {
     recordLine[newStartIndex + 2 + i] = chequeData[i] || "";
   }
 
-  // Update summary fields
-  recordLine[206] = (parseFloat(recordLine[206] || 0) + chequeTotal).toFixed(2); // Cheque total
-  recordLine[207] = (parseFloat(recordLine[207] || 0) + judicialFee).toFixed(2); // Judicial fee
-  recordLine[208] = (parseFloat(recordLine[208] || 0) + adminFee).toFixed(2); // Admin fee
-  recordLine[209] = newTotalDisbursed.toFixed(2); // Total disbursed
-  recordLine[210] = newBalance; // Balance
+  recordLine[206] = (parseFloat(recordLine[206] || 0) + chequeTotal).toFixed(2);
+  recordLine[207] = (parseFloat(recordLine[207] || 0) + judicialFee).toFixed(2);
+  recordLine[208] = (parseFloat(recordLine[208] || 0) + adminFee).toFixed(2);
+  recordLine[209] = newTotalDisbursed.toFixed(2);
+  recordLine[210] = newBalance;
 
-  // Save updates back to file
   lines[Record.lineIndex] = recordLine.join(',');
-  fs.writeFileSync(dataFile, lines.join('\n'));
+  fs.writeFileSync(dataFile, lines.join('\n'), 'utf-8');
 
-  result.textContent = `Disbursement successful. New balance: ${formatCurrencyValue(newBalance)}`;
-
-  // Reset form and hide details
-  form.reset();
-  pensionerDetailsDiv.style.display = 'none';
+  document.getElementById('confirmationModal').style.display = 'none';
+  result.textContent = "Disbursement saved successfully.";
+  pendingDisbursement = null;
+ 
 });
+// Close confirmation modal

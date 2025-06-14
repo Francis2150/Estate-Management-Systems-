@@ -19,6 +19,7 @@ button {
 
 /* Save button default state */
 .save {
+  font-size: 25px; /* Font size for the button text */
   background-color: rgb(50, 119, 58); /* Green background */
   color: white; /* White text */
   border: none; /* No border */
@@ -34,19 +35,77 @@ button {
 }
 
 .home {
+ font-size: 25px;
   color: white;
   text-align: center;
   padding: 5px; /* Adds space inside the button */
   width: 150px; /* Fixed width for uniformity */
   height: 40px; /* Fixed height for uniformity */
   border-radius: 5px; /* Slightly rounded corners */
-  background-color: rgb(13, 230, 212); /* Green background */
+  background-color: rgb(212, 1, 240); /* Green background */
   text-decoration: none;
+}
+/* Home button hover effect */
+.home:hover {
+  background-color: rgb(187, 22, 22); /* Change to blue on hover */
+  color: white; /* Keep text white */
+  border: none;
+  cursor: pointer;
 }
 
 
 
+/* cheques controll button */
+
+/* Green Add Button */
+.add-btn {
+ background-color:green ;
+  color: aliceblue;
+  cursor: pointer;
+  font-size: 25px;
+  transition: background-color 0.2s ease;
+}
+
+.add-btn:hover {
+  background-color: #08125e;
+}
+
+/* Red Remove Button */
+.remove-btn {
+   background-color: red;
+  font-size: 25px;
+  color: aliceblue;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.remove-btn:hover {
+  background-color: #0f0506;
+}
 
 
+#confirmSaveBtn {
+ 
+  background-color:green ;
+  font-size: 25px;
+  color: aliceblue;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#confirmSaveBtn:hover {
+  background-color: #08125e;
+}
 
 
+#cancelSaveBtn {
+ 
+   background-color: red;;
+  font-size: 25px;
+  color: aliceblue;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}

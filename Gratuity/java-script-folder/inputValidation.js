@@ -4,7 +4,7 @@
 function handleFormSubmit(event) {
   event.preventDefault(); // Prevent actual form submission
 
-  const form = document.getElementById('entryForm');
+  const form = document.getElementById('paymentForm');
 
   // ✅ Correct IDs matching HTML
   const chequePairs = [
@@ -15,7 +15,9 @@ function handleFormSubmit(event) {
     ['chequeName5', 'chequeAmount5'],
     ['chequeName6', 'chequeAmount6'],
     ['chequeName7', 'chequeAmount7'],
-    ['retainendDetails', 'retainedAmount']
+    ['chequeName8', 'chequeAmount8'],
+    ['chequeName9', 'chequeAmount9'],
+    ['retain-details', 'retainedAmount']
   ];
 
   let isValid = true;

@@ -9,7 +9,7 @@ body {
 
 /* Main content area */
 main {
-  max-width: 1400px; /* Sets a maximum width to the main container */
+  max-width: 1500px; /* Sets a maximum width to the main container */
   min-width: 1300px; /* Ensures the main container does not shrink below 900px */
   margin: auto; /* Centers the container horizontally */
   margin-top: 3px; /* Adds a small margin at the top */
@@ -27,12 +27,12 @@ main {
 /* Styling for the top-most section of the layout */
 .top-most-part {
   display: grid; /* Uses grid layout for better control of the sections */
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* Divides the area into four equal columns */
+  grid-template-columns: 0.9fr 0.6fr 1fr 1fr 1fr; /* Divides the area into four equal columns */
   margin-bottom: 10px; /* Adds margin below this section */
   margin-top: 0px; /* No top margin */
-  padding-top: 5px; /* Adds padding to the top */
+  padding-top: 2px; /* Adds padding to the top */
   vertical-align: top; /* Aligns the content to the top */
-  column-gap: 40px; /* Adds space between the columns */
+  column-gap: 20px; /* Adds space between the columns */
 }
 
 /* Main title styling */
@@ -81,21 +81,21 @@ h1 {
 
 /* Styling for the pension number field */
 .pension-id {
-  max-width: 160px; /* Maximum width for pension number */
+  max-width: 190px; /* Maximum width for pension number */
   min-width: 100px; /* Minimum width */
   display: inline-block; /* Displays as an inline block */
 }
 
 /* Styling for PV number */
 .pv-no {
-  max-width: 100px; /* Maximum width for PV number */
+  max-width: 135px; /* Maximum width for PV number */
   min-width: 85px; /* Minimum width */
   display: inline-block; /* Displays as an inline block */
 }
 
 /* Date field styling */
 .date {
-  max-width: 150px; /* Maximum width */
+  max-width: 200px; /* Maximum width */
   display: inline-block; /* Displays inline */
   margin-right: 10px; /* Adds space to the right */
 }
@@ -129,9 +129,10 @@ h1 {
 /* Label styling */
 label {
   display: block; /* Displays labels as block elements */
-  font-size: 17px; /* Font size for labels */
+  font-size: 21px; /* Font size for labels */
   margin-bottom: 5px; /* Adds space below each label */
-  font-weight: 600; /* Makes labels bold */
+  color: rgb(10, 77, 233);
+  font-weight: 700; /* Makes labels bold */
 }
 
 /* Input and select element styling */
@@ -161,23 +162,23 @@ input, select {
 .middle-grid-left {
  
   display: grid; /* Uses grid layout */
-  grid-template-columns: 1fr 150px 150px 150px; /* Divides the grid into 4 columns */
+  grid-template-columns: 0.8fr 200px 150px; /* Divides the grid into 4 columns */
   gap: 10px; /* Adds space between grid items */
   margin-top: 20px; /* Adds space above */
 }
 
 /* Administrative fee section */
 .administrativefee {
-  margin-left: 20px; /* Adds space to the left */
-  max-width: 150px; /* Maximum width */
-  min-width: 150px; /* Minimum width */
+  margin-left: 0px; /* Adds space to the left */
+  max-width: 200px; /* Maximum width */
+  min-width: 180px; /* Minimum width */
 }
 
 
 
 /* Administrative fee section */
 .fee-amount {
-  background-color: rgb(241, 36, 36);
+ 
   font-size: large;
   margin-left: 60px; /* Adds space to the left */
   max-width: 250px; /* Maximum width */
@@ -215,7 +216,7 @@ input, select {
 
 /* Check by section */
 .checkby {
-  margin-left: 20px; /* Adds space to the left */
+  margin-left: 0px; /* Adds space to the left */
   max-width: 500px; /* Maximum width */
   min-width: 200px; /* Minimum width */
 }
@@ -325,6 +326,123 @@ border-bottom: 4px solid black; /* Adds a solid black border at the bottom */
   }
 }
 
+
+input, select {
+  height: 40px; /* Set to any value you prefer */
+  font-size: 25px;
+}
+
+
+  .input-error {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+  }
+
+
+select {
+  height: 45px;
+  font-size: 25px;
+  appearance: none;       /* Standard */
+  -webkit-appearance: none; /* Safari/Chrome */
+  -moz-appearance: none;    /* Firefox */
+  padding-left: 10px;
+  padding-right: 10px;
+  background: white;       /* Ensure it doesn't look broken */
+}
+
+
+.live-balance {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 98px 503px 30px 80px; /* Two equal columns */
+  background-color: aqua;
+  border: 1px solid #ccc; 
+  height: 53px;  
+  font-size: 20px;
+  margin-top:55px;
+  margin-bottom: 10px;
+  
+ 
+  border-radius: 5px;
+  border: 1px solid black; /* Light gray border */
+}
+
+.retained-details {
+ 
+  display: flex; /* Flexbox layout */
+  gap: 10px; /* Space between items */
+  margin-bottom: 10px; /* Adds space below */
+  border: 1px solid #000000; /*  */
+   /* Adds space to the right */
+   margin-right: 30px;
+   background-color: red;
+}
+
+
+.symbol {
+  
+  font-size: 20px; /* Font size for the symbol */
+  color: red; /* Red color for emphasis */
+  margin-left: 30px; /* Adds space to the right of the symbol */
+}
+
+
+.detail2 {
+  font-size: 20px; /* Font size for the symbol */
+  color: red; /* Red color for emphasis */
+  margin-left: 30px; /* Adds space to the right of the symbol */
+}
+
+.money {
+  font-size: 20px; /* Font size for the symbol */
+  color: red; /* Red color for emphasis */
+  margin-left: 50px; /* Adds space to the right of the symbol */
+}
+
+
+/* confirmation modal format, buttn format are in button.css */
+#confirmationModal {
+  display:none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+   background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-header {
+  margin-top: 0;
+  margin-bottom: 0;
+  background:red;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  max-width: 1000px;
+  width: 80%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+#confirmationContent {
+ 
+  max-height: 700px;
+  overflow-y: auto;
+  font-size: 30px;
+  height: 70%;
+  margin-bottom: 10px;
+}
 
 
 
