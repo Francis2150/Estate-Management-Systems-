@@ -109,6 +109,15 @@
       align-items: flex-end;
       font-weight: bolder;
     }
+    .amountDetail {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      
+      font-weight: bolder;
+      padding: 2mm;
+      text-align: right;
+    }
 
     .namedetail {
       display: grid;
@@ -164,6 +173,7 @@
     }
 
     .amountDown {
+      font-weight: bolder;
       padding: 2mm;
       text-align: right;
       border-top: 2px solid #000;
@@ -175,16 +185,20 @@
     }
 
     .amountInWordsBox {
-      display: grid;
-      grid-template-columns: 1fr 7.7fr;
-      column-gap: 2mm;
+      padding-top:12px ;
+      display: flex;
+      grid-template-columns: 1fr 7.6fr;
+      
     }
 
     .amountInWordsLabel {
-      padding-left: 2px;
-      display: flex;
-      text-align: center;
-      align-items: center;
+      
+   
+     
+    }
+    .amountInWordsDetail {
+      
+    
     }
 
     .checkedByBox {

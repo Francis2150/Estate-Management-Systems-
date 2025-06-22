@@ -21,12 +21,7 @@ function printVoucherSection() {
       font-family: Calibri;
     }
 
-    body {
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  
 
     .a4Sheet {
       width: 210mm;
@@ -130,6 +125,15 @@ function printVoucherSection() {
       align-items: flex-end;
       font-weight: bolder;
     }
+    .amountDetail {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      
+      font-weight: bolder;
+      padding: 2mm;
+      text-align: right;
+    }
 
     .namedetail {
       display: grid;
@@ -185,6 +189,7 @@ function printVoucherSection() {
     }
 
     .amountDown {
+      font-weight: bolder;
       padding: 2mm;
       text-align: right;
       border-top: 2px solid #000;
@@ -196,16 +201,20 @@ function printVoucherSection() {
     }
 
     .amountInWordsBox {
-      display: grid;
-      grid-template-columns: 1fr 7.7fr;
-      column-gap: 2mm;
+      padding-top:12px ;
+      display: flex;
+      grid-template-columns: 1fr 7.6fr;
+      culumn-gap: 2mm;
     }
 
     .amountInWordsLabel {
-      padding-left: 2px;
-      display: flex;
-      text-align: center;
-      align-items: center;
+      
+   
+     
+    }
+    .amountInWordsDetail {
+      
+    
     }
 
     .checkedByBox {

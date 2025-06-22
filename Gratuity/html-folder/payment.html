@@ -268,7 +268,7 @@
 <button onclick="printVoucherSection()">
       Print Voucher
     </button>
-  <section class="a4Sheet">
+  <section class="a4Sheet" id="paymentVoucher">
    
 
     <div class="pvContainer">
@@ -280,8 +280,8 @@
         </div>
         <div class="subHeader">
           <div class="subHeaderLeft">
-            <p>PV NO.</p>
-            <p>DATE :</p>
+            <p>PV NO.<span id="TpvNo"></span></p>
+            <p>DATE:<span id="TdisburseDate"></span></p>
           </div>
           <div class="subHeaderRight">
             <p>CHEQUE NO.</p>
@@ -293,13 +293,17 @@
         <div class="bodyHeader">
           <div class="bodyHeaderLeft">
             <div class="particularsHeader">PARTICULARS</div>
-            <div class="particularsDetails">
+            <div class="particularsDetails" id="narration">
               BEING COMMUTED PENSION AWARDED THE LATE FESTUS YAO EMMANUELA ADDISON DKAGI AS PER ATTACHED
             </div>
           </div>
           <div class="bodyHeaderRight">
             <div class="amountHeader">AMOUNT GH₵</div>
-            <div class="amountDetail"></div>
+            <div class="amountDetail" >GH₵
+              <span id="PVamountAwarded">
+                124,212,056.10
+              </span>
+            </div>
           </div>
         </div>
         <div class="bodyMiddle">
@@ -308,10 +312,12 @@
               <div class="nameHeader">NAME(S) OF PAYEE</div>
               <div class="namedetail">
                 <div class="nameTop">
-                  <div class="adminFeeDetails">ADMNISTRATIVE FEE</div>
-                  <div class="judicialServFeeDetails">JUDICIAL SERVICE FEE</div>
-                  <div class="chequeNames">CHEQUE NAMES</div>
-                  <div class="retainDetails">RETAINED AMOUNT</div>
+                  <div class="adminFeeDetails" id="adminFeeDetails">ADMNISTRATIVE FEE</div>
+                  <div class="judicialServFeeDetails" id="judicialServFeeDetails">
+                  JUDICIAL SERVICE FEE
+                </div>
+                  <div class="chequeNames" id="chequeNames">CHEQUE NAMES</div>
+                  <div class="retainDetails" id="retainedDetails">RETAINED AMOUNT</div>
                 </div>
                 <div class="nameDown"></div>
               </div>
@@ -328,19 +334,19 @@
             <div class="MTspace"></div>
             <div class="chequeAmounts">
               <div class="amountTop">
-                <div class="adminFeeAmount">GH₵664,220.10</div>
-                <div class="judicialServFeeAmount">GH₵137,220.10</div>
-                <div class="chequeAmount">GH₵234,220.10</div>
-                <div class="retainAmount">GH₵144,220.10</div>
+                <div class="adminFeeAmount" id="PVadminFeeAmount">GH₵664,220.10</div>
+                <div class="judicialServFeeAmount" id="judicialServFeeAmount">GH₵137,220.10</div>
+                <div class="chequeAmount" id="chequeAmounts">GH₵234,220.10</div>
+                <div class="retainAmount" id="retainedAmount">GH₵144,220.10</div>
               </div>
-              <div class="amountDown">GH₵124,220.10</div>
+              <div class="amountDown" id="downAmount">GH₵ 124,212,056.10</div>
             </div>
           </div>
         </div>
         <div class="bodyDown">
           <div class="amountInWordsBox">
             <div class="amountInWordsLabel">AMOUNT IN WORDS</div>
-            <div class="amountInWordsDetail">
+            <div class="amountInWordsDetail" id="amountInWords">
               ONE HUNDRED AND TWENTY FOUR MILLION, TWO HUNDRED AND FIFTEEN THOUSAND TWO HUNDRED AND TWENTY TWO GHANA CEDIS TEN PESWASE
             </div>
           </div>
@@ -351,9 +357,9 @@
               <p>DATE:</p>
             </div>
             <div class="checkedByMid">
-              <p>FRANCIS KWADZO AMUZU</p>
-              <p>SIGNED:</p>
-              <p>DATE:</p>
+              <p id="PvcheckedBy">FRANCIS KWADZO AMUZU</p>
+              <p></p>
+              <p id="downDate"></p>
             </div>
             <div class="checkedByRight">
               <p class="approved">APPROVED BY:</p>
@@ -385,7 +391,7 @@
   <script src="../java-script-folder/cheqContrl.js"></script>
   <script src="../java-script-folder/paymenttrial.js"></script>
   <script src="../java-script-folder/printVoucher.js"></script>
-
+  <script src="../java-script-folder/currency.js"></script>
 
 
 </body>

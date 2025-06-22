@@ -42,6 +42,9 @@ const TpvNo = document.getElementById('TpvNo');
 const TdisburseDate = document.getElementById('TdisburseDate');
 const narrtion = document.getElementById('narrtion');
 const PVamountAwarded = document.getElementById('PVamountAwarded');
+const downAmount = document.getElementById('downAmount');
+const downDate = document.getElementById('downDate');
+const PvcheckedBy= document.getElementById('PvcheckedBy');
 
 
 
@@ -298,6 +301,7 @@ form.addEventListener('submit', (e) => {
   document.getElementById('paymentVoucher').style.display = 'none';
   TpvNo.textContent = pvNo;
   TdisburseDate.textContent = disburseDate;
+  downDate.textContent = disburseDate;
   document.getElementById('narration').textContent = 
   `BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`;
  
@@ -316,10 +320,11 @@ document.getElementById('PVadminFeeAmount').textContent =
  ` GHS ${formatCurrencyValue(judicialFee)} `;
   
   PVamountAwarded.textContent = ` ${formatCurrencyValue(Record.balance)}`;
+  downAmount.textContent = ` GHS ${formatCurrencyValue(Record.balance)}`;
   document.getElementById('chequeNames').innerHTML =  ` ${chequeNameHTML}`;
   document.getElementById('chequeAmounts').innerHTML = ` ${chequeAmountHTML}`;
 
-  document.getElementById('retainedDetail').textContent = RetainedDetails;
+  document.getElementById('retainedDetails').textContent = RetainedDetails;
   document.getElementById('retainedAmount').textContent = `GHS${formatCurrencyValue(newBalance)}`;
 
 });
