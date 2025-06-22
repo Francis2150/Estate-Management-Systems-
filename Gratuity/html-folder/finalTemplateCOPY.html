@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Voucher</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Calibri ;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+    }
+
+    /* A4-sized sheet */
+    .a4Sheet {
+      width: 210mm;
+      height: 297mm;
+      background-color: #92AF7D; /* Slightly softened green */
+      padding: 12mm 10mm;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+     
+    }
+
+    /* Inner container for content */
+    .pvContainer {
+      width: 100%;
+      height: 100%;
+     
+      display: grid;
+      grid-template-rows: 1fr 6fr; /* Header and body proportions */
+      
+    }
+
+    /* Header styles */
+    .header {
+      display: grid;
+      grid-template-rows: 2fr 1fr; 
+    
+      
+    }
+    .topHeader {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr; 
+      row-gap: 0;
+     
+      text-align: center;
+      font-weight: bolder;
+      font-size: 22px;
+      padding-bottom: 0;
+    }
+    .thirdP {
+      margin-bottom: 0;
+      
+    }
+
+    /* Sub-header styles */
+    .subHeader {
+      display: grid;
+      grid-template-columns: 3fr 1fr; 
+     
+    }
+  
+
+
+   
+    /* Body styles */
+    .body {
+      display: grid;
+      grid-template-rows: 1fr 3.5fr 3fr; /* Header, middle, and footer */
+     
+      border: 2px solid #000; /* to be remove*/
+    }
+
+
+    /* Body header styles */
+    .bodyHeader {
+      
+      border-bottom: 2px solid #000; 
+      display: grid;
+      grid-template-columns: 3fr 1fr; 
+    }
+    .bodyHeaderLeft {
+      display: grid;
+      grid-template-rows: 1fr 1.5fr; /* Two rows for particulars and details */
+      
+      border-right: 2px solid #000; /* right border */
+      
+    }
+    .particularsHeader {
+      display: flex;
+      
+      border-bottom: 2px solid #000; 
+      justify-content: center;
+      align-items: flex-end;     
+      font-weight: bolder;
+      
+    }
+  
+  
+    .bodyHeaderRight {
+      display: grid;
+      grid-template-rows: 1fr 1.5fr; 
+      
+    }
+    .amountHeader {
+      display: flex;
+      
+      border-bottom: 2px solid #000; 
+      justify-content: center;
+      align-items: flex-end;     
+      font-weight: bolder;
+      }
+   
+
+    /* Middle and footer sections */
+    .bodyMiddle {
+      display: grid;
+      grid-template-columns: 3fr 1fr;  
+     
+      border-bottom: 2px solid #000; /* */
+    }
+    .bodyMiddleLeft {
+      display: grid;
+       grid-template-columns: 2.5fr 1fr; /* Two rows for name and signature */
+      
+      border-right: 2px solid #000; /* right border */
+    }
+    .nameSide {
+      display: grid;
+      grid-template-rows: 1fr 7fr; /* Two rows for name and signature */
+      
+      border-right: 2px solid #000; /* right border */
+    
+    }
+    .nameHeader {
+      display: flex;
+      
+      border-bottom: 2px solid #000; 
+      justify-content: center;
+      align-items: flex-end;     
+      font-weight: bolder;
+    }
+    .namedetail {
+      display: grid;
+      grid-template-rows: 6fr 1fr; 
+     
+    }
+    .nameTop {
+      display: grid;
+      padding: 2mm;
+      grid-template-rows: 1.5fr 1fr 6fr 1.5fr; /* Four columns for details */
+      
+    }
+  
+ 
+    .signatureSide {
+      display: grid;
+      grid-template-rows: 1fr 7fr; /* Two rows for signature */
+   
+    }
+    .signatureHeader {
+      display: flex;
+      
+      border-bottom: 2px solid #000; 
+      justify-content: center;
+      align-items: flex-end;     
+      font-weight: bolder;
+    }
+    .signatureDetail {
+      display: grid;
+      grid-template-rows: 6fr 1fr;
+     
+    }
+  
+    .bodyMiddleRight {
+      display: grid;
+      grid-template-rows: 1fr 7fr; /* Two rows for MT space and cheque amounts */
+      
+    }
+    .MTspace {
+      display: flex;
+      
+     
+      justify-content: center;
+      align-items: flex-end;     
+      font-weight: bolder;
+    }
+    .chequeAmounts {
+      display: grid;
+      grid-template-rows: 6fr 1fr; 
+        
+    }
+    .amountTop {
+      padding: 2mm;
+      text-align: right;
+      display: grid;
+      grid-template-rows: 1.5fr 1fr 6fr 1.5fr;  /* Four rows for amounts */
+     
+    }
+    
+
+    .amountDown {
+      background-color: #9d3d3d;
+      border-top: 2px solid #000; 
+    }
+
+
+    /* down section section */
+    .bodyDown {
+      display: grid;
+      grid-template-rows: 1fr 1.5fr 1fr 1fr; 
+    }
+    .amountInWordsBox{
+     
+      display: grid;
+      grid-template-columns: 1fr 7.7fr;
+      column-gap: 2mm;
+      background-color: rgb(255, 0, 0);
+      
+    } 
+    .amountInWordsLabel {
+      padding-left: 2px;
+      display: flex;
+      text-align: center;
+      align-items: center;
+    
+      background-color: rgb(136, 136, 109);
+   
+    }
+    .amountInWordsDetail {
+      background-color: rgb(255, 255, 0);
+      
+    }
+    .checkedByBox {
+      display: grid;
+      grid-template-columns: 0.8fr 1fr 0.8fr;
+      background-color: rgb(0, 255, 0);
+      border-bottom: 2px solid #000;
+    }
+    .checkedByLeft {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      padding-left: 2px;
+      align-items: center;
+      background-color: rgb(255, 255, 255);
+     
+      
+    }
+    .checkedByMid {
+      background-color: rgb(255, 0, 255);
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      padding-left: 2px;
+      align-items: center;
+      
+    }
+    .checkedByRight {
+      padding-top: 2mm;
+      padding-right: 2mm;
+      background-color: rgb(227, 248, 255);
+      
+    }
+    .approved {
+      
+      font-weight: bolder;
+      height: 90%;
+      padding-top: 4px;
+      padding-left: 4px;
+      padding-right: 2px;
+      border: 2px solid #000; 
+      
+    }
+    .certifiedBox {
+     display: grid;
+      grid-template-columns:2.5fr 1fr;
+      padding: 2px;
+      column-gap: 2mm;
+     background-color: rgb(184, 202, 166);
+     border-bottom: 2px solid #000;
+      
+    }
+    .witnessedByBox {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      background-color: rgb(255, 0, 140);
+      
+    }
+    .witnessTOP {
+      text-align: center;
+      background-color: rgb(255, 255, 255);
+      
+    }
+    .witnessDown {
+      display: grid;
+      grid-template-columns: 1.5fr 1.2fr 1fr;
+      padding-left: 2px;
+      padding-right: 2px;
+      align-items: center;
+      background-color: rgb(255, 255, 0);
+    }
+
+  </style>
+</head>
+<body>
+    <section class="a4Sheet">
+  <div class="pvContainer">
+    <!-- Voucher content goes here -->
+
+    <!-- Header content -->
+    <div class="header">
+      <div class="topHeader">
+        <div>REGISTRAR GENERAL’S DEPARTMENT</div>
+        <div>ESTATE ACCOUNTS</div>
+        <div class="thirdP">PAYMENT VOUCHER</div>
+      </div>
+
+      <div class="subHeader">
+        <div class="subHeaderLeft">
+          <p>PV NO.</p>
+          <p>DATE :</p>
+        </div>
+        <div class="subHeaderRight">
+          <p>CHEQUE NO.</p>
+          <p></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body content -->
+    <div class="body">
+      <div class="bodyHeader">
+        <div class="bodyHeaderLeft">
+          <div class="particularsHeader">PARTICULARS</div>
+          <div class="particularsDetails">
+            BEING COMMUTED PENSION AWARDED THE LATE FESTUS YAO EMMANUELA ADDISON DKAGI AS PER ATTACHED
+          </div>
+        </div>
+        <div class="bodyHeaderRight">
+          <div class="amountHeader">AMOUNT GH₵</div>
+          <div class="amountDetail"></div>
+        </div>
+      </div>
+
+      <div class="bodyMiddle">
+        <div class="bodyMiddleLeft">
+          <div class="nameSide">
+            <div class="nameHeader">NAME(S) OF PAYEE</div>
+            <div class="namedetail">
+              <div class="nameTop">
+                <div class="adminFeeDetails">ADMNISTRATIVE FEE</div>
+                <div class="judicialServFeeDetails">JUDICIAL SERVICE FEE</div>
+                <div class="chequeNames">CHEQUE NAMES</div>
+                <div class="retainDetails">RETAINED AMOUNT</div>
+              </div>
+              <div class="nameDown"></div>
+            </div>
+          </div>
+
+          <div class="signatureSide">
+            <div class="signatureHeader">SIGNATURE</div>
+            <div class="signatureDetail">
+              <div class="signatureTop"></div>
+              <div class="signatureDown"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bodyMiddleRight">
+          <div class="MTspace"></div>
+          <div class="chequeAmounts">
+            <div class="amountTop">
+              <div class="adminFeeAmount">GH₵664,220.10</div>
+              <div class="judicialServFeeAmount">GH₵137,220.10</div>
+              <div class="chequeAmount">GH₵234,220.10</div>
+              <div class="retainAmount">GH₵144,220.10</div>
+            </div>
+            <div class="amountDown">GH₵124,220.10</div>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="bodyDown"> <!--*begining of down part*-->
+        <div class="amountInWordsBox">
+           <div class="amountInWordsLabel">
+             AMOUNT IN WORDS
+           </div>
+           <div class="amountInWordsDetail">
+              ONE HUNDRED AND TWENTY FOUR MILLION, TWO HUNDRED AND FIFTEEN THOUSAND TWO HUNDRED AND TWENTY TWO GHANA CEDIS TEN PESWASE 
+           </div>
+        </div>
+        <div class="checkedByBox">
+           <div class="checkedByLeft">
+             <p>CHECKED BY (FULL NAME):</p>
+             <p>SIGNED:</p>
+             <p>DATE:</p>
+           </div>
+           <div class="checkedByMid">
+              <p>FRANCIS KWADZO AMUZU</p>
+              <p>SIGNED:</p>
+              <p>DATE:</p>
+           </div>
+           <div class="checkedByRight">
+               <p class="approved">APPROVED BY:</p>
+           </div>
+        </div>
+        <div class="certifiedBox">
+            <p>CERTIFY BY:</p>
+            <p>AUTHORISED BY:</p>
+        </div>
+        <div class="witnessedByBox">
+           <div class="witnessTOP">
+            PAYMENT WITNESS BY:
+          </div>
+           <div class="witnessDown">
+              <p>NAME:</p>
+              <p>SIGNATURE:</p>
+              <p>DATE:</p>
+           </div>
+        </div>
+      
+      </div> <!--end of the down part-->
+
+
+    </div>   <!--end of the pv body the three main division-->
+  </div> <!--end of the the main container-->
+</section> <!--end of the a4 sheet-->
+
+</body>
+</html>

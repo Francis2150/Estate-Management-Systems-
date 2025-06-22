@@ -8,12 +8,14 @@
   <link rel="stylesheet" href="../css-folder/payment.css"/>
   <link rel="stylesheet" href="../css-folder/error.css"/>
   <link rel="stylesheet" href="../css-folder/button.css"/>
+  <link rel="stylesheet" href="../css-folder/pvTemplate.css"/>
 
   <!-- JavaScript files for input validation and formatting -->
   <script src="../java-script-folder/inputValidation.js"></script>
   <script src="../java-script-folder/inputFormat.js"></script>
 
   <title>Payment Page</title>
+
 </head>
 <body>
   <main class="main-content">
@@ -84,7 +86,7 @@
           </div>
 
           <div class="fee-amount">
-            <label for="adminFeeAmount">Admin Fee Amount:</label>
+            <label for="adminFeeAmount">ADMIN FEE:</label>
             <div class="feebox" id="adminFeeAmount" data-display="currency"></div>
           </div>
         </div>
@@ -184,10 +186,22 @@
 
           <!-- Live balance display -->
           <div class="live-balance">
-            <div><strong id="LiveBalancelable">Live Bal :</strong></div>
-            <div><input type="text" id="retain-details" placeholder="Retained Portion Details" /></div>
-            <div class="symbol">GH₵</div>
-            <div><span class="money" id="liveBalance" style="color: green; font-weight: bold;">0.00</span></div>
+            <div class="live-balance-label">
+              <strong id="LiveBalancelable">
+                Live Bal :
+              </strong>
+          </div>
+            <div class="retain-details">
+              <input type="text" id="retainedDetail" placeholder="Retained Portion Details"/>
+            </div>
+            <div class="symbol">
+              GH₵
+            </div>
+            <div class="money">
+                <span  id="liveBalance" 
+                >0.00
+                </span>
+             </div>
           </div>
 
           <div id="result">confirmation /folder check</div>
@@ -245,14 +259,132 @@
 </div>
 
 
-  <!-- Optional preview section -->
-  <!-- <section><iframe id="previewFrame" src="pvTemplate.html"></iframe></section> -->
+
+<!----PV TEMPLATE AND DISPLAY SECTION-->
+
+
+
+
+<button onclick="printVoucherSection()">
+      Print Voucher
+    </button>
+  <section class="a4Sheet">
+   
+
+    <div class="pvContainer">
+      <div class="header">
+        <div class="topHeader">
+          <div>REGISTRAR GENERAL’S DEPARTMENT</div>
+          <div>ESTATE ACCOUNTS</div>
+          <div class="thirdP">PAYMENT VOUCHER</div>
+        </div>
+        <div class="subHeader">
+          <div class="subHeaderLeft">
+            <p>PV NO.</p>
+            <p>DATE :</p>
+          </div>
+          <div class="subHeaderRight">
+            <p>CHEQUE NO.</p>
+            <p></p>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="bodyHeader">
+          <div class="bodyHeaderLeft">
+            <div class="particularsHeader">PARTICULARS</div>
+            <div class="particularsDetails">
+              BEING COMMUTED PENSION AWARDED THE LATE FESTUS YAO EMMANUELA ADDISON DKAGI AS PER ATTACHED
+            </div>
+          </div>
+          <div class="bodyHeaderRight">
+            <div class="amountHeader">AMOUNT GH₵</div>
+            <div class="amountDetail"></div>
+          </div>
+        </div>
+        <div class="bodyMiddle">
+          <div class="bodyMiddleLeft">
+            <div class="nameSide">
+              <div class="nameHeader">NAME(S) OF PAYEE</div>
+              <div class="namedetail">
+                <div class="nameTop">
+                  <div class="adminFeeDetails">ADMNISTRATIVE FEE</div>
+                  <div class="judicialServFeeDetails">JUDICIAL SERVICE FEE</div>
+                  <div class="chequeNames">CHEQUE NAMES</div>
+                  <div class="retainDetails">RETAINED AMOUNT</div>
+                </div>
+                <div class="nameDown"></div>
+              </div>
+            </div>
+            <div class="signatureSide">
+              <div class="signatureHeader">SIGNATURE</div>
+              <div class="signatureDetail">
+                <div class="signatureTop"></div>
+                <div class="signatureDown"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bodyMiddleRight">
+            <div class="MTspace"></div>
+            <div class="chequeAmounts">
+              <div class="amountTop">
+                <div class="adminFeeAmount">GH₵664,220.10</div>
+                <div class="judicialServFeeAmount">GH₵137,220.10</div>
+                <div class="chequeAmount">GH₵234,220.10</div>
+                <div class="retainAmount">GH₵144,220.10</div>
+              </div>
+              <div class="amountDown">GH₵124,220.10</div>
+            </div>
+          </div>
+        </div>
+        <div class="bodyDown">
+          <div class="amountInWordsBox">
+            <div class="amountInWordsLabel">AMOUNT IN WORDS</div>
+            <div class="amountInWordsDetail">
+              ONE HUNDRED AND TWENTY FOUR MILLION, TWO HUNDRED AND FIFTEEN THOUSAND TWO HUNDRED AND TWENTY TWO GHANA CEDIS TEN PESWASE
+            </div>
+          </div>
+          <div class="checkedByBox">
+            <div class="checkedByLeft">
+              <p>CHECKED BY (FULL NAME):</p>
+              <p>SIGNED:</p>
+              <p>DATE:</p>
+            </div>
+            <div class="checkedByMid">
+              <p>FRANCIS KWADZO AMUZU</p>
+              <p>SIGNED:</p>
+              <p>DATE:</p>
+            </div>
+            <div class="checkedByRight">
+              <p class="approved">APPROVED BY:</p>
+            </div>
+          </div>
+          <div class="certifiedBox">
+            <p>CERTIFY BY:</p>
+            <p>AUTHORISED BY:</p>
+          </div>
+          <div class="witnessedByBox">
+            <div class="witnessTOP">PAYMENT WITNESS BY:</div>
+            <div class="witnessDown">
+              <p>NAME:</p>
+              <p>SIGNATURE:</p>
+              <p>DATE:</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+ 
 
 
   <!-- Scripts -->
   <script src="../java-script-folder/navigation.js"></script>
   <script src="../java-script-folder/cheqContrl.js"></script>
   <script src="../java-script-folder/paymenttrial.js"></script>
+  <script src="../java-script-folder/printVoucher.js"></script>
 
 
 

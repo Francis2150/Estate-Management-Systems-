@@ -35,6 +35,16 @@ const adminFeeRateInput = document.getElementById('adminFeeRate');
 const EstateTypeInput = document.getElementById('estateType');
 const liveBalanceDisplay = document.getElementById('liveBalance');
 const LiveBalancelable = document.getElementById('LiveBalancelable');
+const RetainedDetails = document.getElementById('retainedDetail').value;
+
+// pv template variables call
+const TpvNo = document.getElementById('TpvNo');
+const TdisburseDate = document.getElementById('TdisburseDate');
+const narrtion = document.getElementById('narrtion');
+const PVamountAwarded = document.getElementById('PVamountAwarded');
+
+
+
 
 let Record = null;
 let isFirstDisbursement = false;
@@ -221,7 +231,10 @@ form.addEventListener('submit', (e) => {
     result.textContent = "Please enter both the PV No and disbursement date.";
     return;
   }
+  
 
+  let chequeNameHTML = '';
+  let chequeAmountHTML = '';
   const chequeData = [];
   let chequeTotal = 0;
   let chequeSummaryHTML = '';
@@ -237,6 +250,8 @@ form.addEventListener('submit', (e) => {
     chequeTotal += amount;
 
     if (name || amount > 0) {
+      chequeNameHTML += `<div> ${name} </div>`;
+      chequeAmountHTML += `<div>GHS ${formatCurrencyValue(amount)}</div>`;
       chequeSummaryHTML += `<div>Cheque ${i}: ${name} - GHS ${formatCurrencyValue(amount)}</div>`;
     }
   }
@@ -264,7 +279,7 @@ form.addEventListener('submit', (e) => {
     <strong>Disbursement Date:</strong> ${disburseDate}<br/>
     <strong>Estate Type:</strong> ${EstateTypeInput.value}<br/>
     <strong>Admin Fee Rate:</strong> ${adminFeeRateInput.value}%<br/>
-    
+    <strong>Amount Awarded:</strong> GHS ${formatCurrencyValue(Record.balance)}<br/>
     <strong>Admin Fee:</strong> GHS ${formatCurrencyValue(adminFee)}<br/>
     <strong>Judicial Fee:</strong> GHS ${formatCurrencyValue(judicialFee)}<br/>
     <strong>Cheque Total:</strong> GHS ${formatCurrencyValue(chequeTotal)}<br/>
@@ -277,6 +292,36 @@ form.addEventListener('submit', (e) => {
 
   document.getElementById('confirmationContent').innerHTML = confirmationContent;
   document.getElementById('confirmationModal').style.display = 'flex';
+
+
+  // Hide payment voucher initially and set template variables
+  document.getElementById('paymentVoucher').style.display = 'none';
+  TpvNo.textContent = pvNo;
+  TdisburseDate.textContent = disburseDate;
+  document.getElementById('narration').textContent = 
+  `BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`;
+ 
+document.getElementById('adminFeeDetails').innerHTML =
+ `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF
+  ${formatCurrencyValue(Record.originalAmount)}) <br/>
+RGD NTR HOLDING ACCOUNT`;
+
+document.getElementById('PVadminFeeAmount').textContent =
+ ` ${formatCurrencyValue(adminFee)}`;
+
+ document.getElementById('judicialServFeeDetails').innerHTML =
+ `JUDICIAL SERVICE FEE `;
+
+ document.getElementById('judicialServFeeAmount').textContent =
+ ` GHS ${formatCurrencyValue(judicialFee)} `;
+  
+  PVamountAwarded.textContent = ` ${formatCurrencyValue(Record.balance)}`;
+  document.getElementById('chequeNames').innerHTML =  ` ${chequeNameHTML}`;
+  document.getElementById('chequeAmounts').innerHTML = ` ${chequeAmountHTML}`;
+
+  document.getElementById('retainedDetail').textContent = RetainedDetails;
+  document.getElementById('retainedAmount').textContent = `GHS${formatCurrencyValue(newBalance)}`;
+
 });
 
 
@@ -318,8 +363,16 @@ form.addEventListener('submit', (e) => {
   lines[Record.lineIndex] = recordLine.join(',');
   fs.writeFileSync(dataFile, lines.join('\n'), 'utf-8');
 
+
+  // Build payment voucher content for display dal 
+
   document.getElementById('confirmationModal').style.display = 'none';
+ 
+  document.getElementById('paymentVoucher').style.display = 'none';
+  document.getElementById('paymentVoucher').style.display = 'block';
+
   result.textContent = "Disbursement saved successfully.";
+ 
   pendingDisbursement = null;
  
 });

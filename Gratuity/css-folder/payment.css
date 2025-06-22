@@ -1,4 +1,13 @@
 /* Basic styling for the body element */
+
+
+ * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+     
+    }
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sets a clean, modern sans-serif font */
   background-color: #f4f4f4; /* Light gray background color */
@@ -235,7 +244,7 @@ input, select {
 }
 
 /* Styling for cheque and retained sections */
-.cheque-pair, .retained {
+.cheque-pair {
   display: flex; /* Flexbox layout */
   gap: 10px; /* Space between items */
   margin-bottom: 10px; /* Adds space below */
@@ -352,38 +361,40 @@ select {
 
 
 .live-balance {
-  width: 90%;
+  width: 95%;
   display: grid;
-  grid-template-columns: 98px 503px 30px 80px; /* Two equal columns */
-  background-color: aqua;
+  grid-template-columns: 0.4fr 1fr 0.15fr 0.5fr; /* Two equal columns */
+ 
   border: 1px solid #ccc; 
-  height: 53px;  
+  height: 55px;  
   font-size: 20px;
   margin-top:55px;
-  margin-bottom: 10px;
-  
- 
   border-radius: 5px;
   border: 1px solid black; /* Light gray border */
 }
+.live-balance-label {
+  height:100% ;
+ padding: 8px 4px;
+  font-weight: bold; /* Makes the text bold */
 
-.retained-details {
- 
-  display: flex; /* Flexbox layout */
-  gap: 10px; /* Space between items */
-  margin-bottom: 10px; /* Adds space below */
-  border: 1px solid #000000; /*  */
-   /* Adds space to the right */
-   margin-right: 30px;
-   background-color: red;
+}
+.live-balance input {
+  height:100% ;
+  border-left: 2px solid black;
+  border-right:2px solid black ;
+  font-weight: bold; /* Makes the text bold */
+
 }
 
 
+
+
 .symbol {
-  
-  font-size: 20px; /* Font size for the symbol */
-  color: red; /* Red color for emphasis */
-  margin-left: 30px; /* Adds space to the right of the symbol */
+  padding-top: 8px;
+  font-size: 25px; 
+  font-weight: bolder;
+  color: red;
+ 
 }
 
 
@@ -394,9 +405,12 @@ select {
 }
 
 .money {
-  font-size: 20px; /* Font size for the symbol */
-  color: red; /* Red color for emphasis */
-  margin-left: 50px; /* Adds space to the right of the symbol */
+  
+  padding-top: 8px;
+  font-size: 25px; 
+  font-weight: bolder;
+  color: red; 
+  height: 100%;
 }
 
 

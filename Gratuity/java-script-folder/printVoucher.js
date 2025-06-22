@@ -1,11 +1,32 @@
-* {
+function printVoucherSection() {
+  const voucher = document.querySelector('.a4Sheet');
+  if (!voucher) {
+    alert("Voucher section not found.");
+    return;
+  }
+
+  // Clone the content
+  const printContent = voucher.cloneNode(true);
+
+  // Create a new print window
+  const printWindow = window.open('', '_blank');
+
+  // Define the CSS you want to apply (copy from your original <style>)
+  const style = `
+   <style>
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: Calibri;
     }
 
-  
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     .a4Sheet {
       width: 210mm;
@@ -239,3 +260,31 @@
       padding-right: 2px;
       align-items: flex-end;
     }
+  </style>
+  `;
+
+  // Write to the new window
+  printWindow.document.open();
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Print Payment Voucher</title>
+      ${style}
+    </head>
+    <body>
+      ${printContent.outerHTML}
+      <script>
+        window.onload = function() {
+          window.print();
+          window.onafterprint = function() {
+            window.close();
+          };
+        };
+      <\/script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
