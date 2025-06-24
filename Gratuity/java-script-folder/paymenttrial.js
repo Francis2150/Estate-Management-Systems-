@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-// Format number as currency (e.g., 1234.5 → "1,234.50")
+// Format number as currency
 function formatCurrencyValue(value) {
   if (value == null || value === "") return "0.00";
   value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
@@ -10,17 +10,15 @@ function formatCurrencyValue(value) {
   let integerPart = parts[0];
   let decimalPart = parts[1] || "";
   integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  decimalPart = decimalPart.substring(0, 2);
-  if (decimalPart.length === 1) decimalPart += "0";
-  if (decimalPart.length === 0) decimalPart = "00";
+  decimalPart = decimalPart.padEnd(2, "0").substring(0, 2);
   return `${integerPart}.${decimalPart}`;
 }
 
-// Paths for CSV file
+// CSV file paths
 const dataFolder = path.join(os.homedir(), 'MyAppDataTwo');
 const dataFile = path.join(dataFolder, 'GRATUITY.csv');
 
-// DOM Elements
+// DOM elements
 const form = document.getElementById('paymentForm');
 const searchIDInput = document.getElementById('pensionId');
 const pensionerDetailsDiv = document.getElementById('pensioneerDetails');
@@ -35,24 +33,36 @@ const adminFeeRateInput = document.getElementById('adminFeeRate');
 const EstateTypeInput = document.getElementById('estateType');
 const liveBalanceDisplay = document.getElementById('liveBalance');
 const LiveBalancelable = document.getElementById('LiveBalancelable');
-const RetainedDetails = document.getElementById('retainedDetail').value;
 
-// pv template variables call
+// Payment Voucher elements
 const TpvNo = document.getElementById('TpvNo');
 const TdisburseDate = document.getElementById('TdisburseDate');
 const narrtion = document.getElementById('narrtion');
 const PVamountAwarded = document.getElementById('PVamountAwarded');
 const downAmount = document.getElementById('downAmount');
 const downDate = document.getElementById('downDate');
-const PvcheckedBy= document.getElementById('PvcheckedBy');
+// const PvcheckedBy = document.getElementById('PvcheckedBy'); // Optional: use if needed
 
-
-
+// Column index constants
+const TOTAL_CHEQUE_INDEX = 206;
+const TOTAL_JUDICIAL_INDEX = 207;
+const TOTAL_ADMIN_INDEX = 208;
+const TOTAL_DISBURSED_INDEX = 209;
+const BALANCE_INDEX = 210;
 
 let Record = null;
 let isFirstDisbursement = false;
 
-// Show diagonal error overlay for 4 seconds
+// Debounce for search
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+// Overlay error
 function showErrorOverlay() {
   const overlay = document.getElementById('overlayError');
   if (overlay) {
@@ -63,16 +73,7 @@ function showErrorOverlay() {
   }
 }
 
-// Debounce function for smoother input handling
-function debounce(func, wait) {
-  let timeout;
-  return function (...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
-
-// Search pensioner by ID
+// Search function
 function searchPensioner() {
   const pensionID = searchIDInput.value.trim();
   if (!pensionID) {
@@ -95,7 +96,7 @@ function searchPensioner() {
   for (let i = 1; i < lines.length; i++) {
     const row = lines[i].split(',');
     if (row[0] === pensionID) {
-      const totalDisbursed = parseFloat(row[209]) || 0;
+      const totalDisbursed = parseFloat(row[TOTAL_DISBURSED_INDEX]) || 0;
       Record = {
         id: row[0],
         name: row[1],
@@ -119,7 +120,6 @@ function searchPensioner() {
     pensionerDetailsDiv.style.display = 'none';
   } else {
     status.textContent = "Record found successfully.";
-    adminFeeAmount.textContent = "0.00";
     pensioneerName.textContent = ` ${Record.name}`;
     amountAwarded.textContent = formatCurrencyValue(Record.originalAmount);
     totalDisbursedDisplay.textContent = formatCurrencyValue(Record.totalDisbursed);
@@ -130,7 +130,6 @@ function searchPensioner() {
   }
 }
 
-// Recalculate admin fee based on estate type and rate
 function calculateAdminFee() {
   if (!Record) return;
   let rate = parseFloat(adminFeeRateInput.value);
@@ -146,11 +145,8 @@ function calculateAdminFee() {
   adminFeeAmount.textContent = formatCurrencyValue(fee);
 }
 
-// Calculate total disbursement and update live balance
 function updateLiveBalance() {
   if (!Record) return;
-
-  // Get inputs
   let judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
   let adminFee = parseFloat(adminFeeAmount.textContent.replace(/,/g, '')) || 0;
   let chequeTotal = 0;
@@ -163,78 +159,24 @@ function updateLiveBalance() {
     }
   }
 
-  // Calculate potential disbursement
   const potentialDisbursement = chequeTotal + judicialFee + adminFee;
   const updatedBalance = Record.balance - potentialDisbursement;
 
-  // Show error if balance exceeded
   const overlay = document.getElementById('overlayError');
   if (updatedBalance < 0) {
     const exceededAmount = formatCurrencyValue(Math.abs(updatedBalance));
     overlay.textContent = `❌ OVER PAYMENT BY GHS ${exceededAmount}`;
     overlay.style.display = 'block';
-
-    // Hide after 3 seconds
     setTimeout(() => {
       overlay.style.display = 'none';
     }, 7000);
   }
 
-  // Show live balance (never below 0)
   liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance < 0 ? 0 : updatedBalance);
-
-  // Update label
-  const label = document.getElementById('LiveBalancelable');
-  if (Record.originalAmount === updatedBalance) {
-    label.textContent = "Unclaimed:";
-  } else {
-    label.textContent = "Retain :";
-  }
+  LiveBalancelable.textContent = (Record.originalAmount === updatedBalance) ? "Unclaimed:" : "Retain :";
 }
 
-
-
-
-
-
-// Initialize batch processing variables
-let currentBatch = [];
-let batchLimit = 0;
-let batchCount = 0;
-
-// Start batch session
-document.getElementById('startBatchBtn').addEventListener('click', () => {
-  batchLimit = parseInt(document.getElementById('batchCount').value) || 0;
-  if (batchLimit <= 0) {
-    document.getElementById('batchStatus').textContent = "Invalid batch size.";
-    return;
-  }
-
-  currentBatch = [];
-  batchCount = 0;
-  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} pensioners.`;
-});
-// Add current pensioner to batch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Event listeners
-
-
 searchIDInput.addEventListener('input', debounce(searchPensioner, 300));
 document.getElementById('judicialServiceFee').addEventListener('input', updateLiveBalance);
 adminFeeRateInput.addEventListener('input', () => {
@@ -252,249 +194,26 @@ for (let i = 1; i <= 9; i++) {
   }
 }
 
-// Submit form to save disbursement to CSV
-let pendingDisbursement = null;
+// Placeholder: batch processing variables
+let currentBatch = [];
+let batchLimit = 0;
+let batchCount = 0;
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  if (!Record) {
-    result.textContent = "Please search and select a pensioner first.";
+document.getElementById('startBatchBtn').addEventListener('click', () => {
+  batchLimit = parseInt(document.getElementById('batchCount').value) || 0;
+  if (batchLimit <= 0) {
+    document.getElementById('batchStatus').textContent = "Invalid batch size.";
     return;
   }
-
-  const disburseDate = document.getElementById('disburseDate').value;
-  const pvNo = document.getElementById('pvNo').value.trim();
-  const judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
-  const adminFee = parseFloat(adminFeeAmount.textContent.replace(/,/g, '')) || 0;
-
-  if (!disburseDate || !pvNo) {
-    result.textContent = "Please enter both the PV No and disbursement date.";
-    return;
-  }
-  
-
-  let chequeNameHTML = '';
-  let chequeAmountHTML = '';
-  const chequeData = [];
-  let chequeTotal = 0;
-  let chequeSummaryHTML = '';
-
-  for (let i = 1; i <= 9; i++) {
-    const nameInput = document.getElementById(`chequeName${i}`);
-    const amountInput = document.getElementById(`chequeAmount${i}`);
-    const name = nameInput?.value.trim() || "";
-    const amount = parseFloat(amountInput?.value.replace(/,/g, '') || 0);
-
-    chequeData.push(name);
-    chequeData.push(amount > 0 ? amount.toFixed(2) : "");
-    chequeTotal += amount;
-
-    if (name || amount > 0) {
-      chequeNameHTML += `<div> ${name} </div>`;
-      chequeAmountHTML += `<div>GHS ${formatCurrencyValue(amount)}</div>`;
-      chequeSummaryHTML += `<div>Cheque ${i}: ${name} - GHS ${formatCurrencyValue(amount)}</div>`;
-    }
-  }
-
-  const totalDisbursedAmount = chequeTotal + judicialFee + adminFee;
-  const newTotalDisbursed = Record.totalDisbursed + totalDisbursedAmount;
-  const newBalance = (Record.originalAmount - newTotalDisbursed).toFixed(2);
-
-  if (newTotalDisbursed > Record.originalAmount) {
-    result.textContent = "Disbursement exceeds original amount.";
-    showErrorOverlay();
-    return;
-  }
-
-  // Save pending data to global var for confirmation
-  pendingDisbursement = {
-    pvNo, disburseDate, chequeData, chequeTotal, judicialFee, adminFee,
-    newTotalDisbursed, newBalance
-  };
-
-  // Build confirmation modal content
-  const confirmationContent = `
-    <strong>PV No:</strong> ${pvNo}<br/>
-    <strong>Deceased Name:</strong> ${Record.name}<br/>
-    <strong>Disbursement Date:</strong> ${disburseDate}<br/>
-    <strong>Estate Type:</strong> ${EstateTypeInput.value}<br/>
-    <strong>Admin Fee Rate:</strong> ${adminFeeRateInput.value}%<br/>
-    <strong>Amount Awarded:</strong> GHS ${formatCurrencyValue(Record.balance)}<br/>
-    <strong>Admin Fee:</strong> GHS ${formatCurrencyValue(adminFee)}<br/>
-    <strong>Judicial Fee:</strong> GHS ${formatCurrencyValue(judicialFee)}<br/>
-    <strong>Cheque Total:</strong> GHS ${formatCurrencyValue(chequeTotal)}<br/>
-    <strong>Current Disbursement Total:</strong> GHS ${formatCurrencyValue(totalDisbursedAmount)}<br/>
-   
-    <strong>Retained Portion:</strong> GHS ${formatCurrencyValue(newBalance)}<br/>
-    <hr/>
-    ${chequeSummaryHTML}
-  `;
-
-  document.getElementById('confirmationContent').innerHTML = confirmationContent;
-  document.getElementById('confirmationModal').style.display = 'flex';
-
-
-  // Hide payment voucher initially and set template variables
-  document.getElementById('paymentVoucher').style.display = 'none';
-  TpvNo.textContent = pvNo;
-  TdisburseDate.textContent = disburseDate;
-  downDate.textContent = disburseDate;
-  document.getElementById('narration').textContent = 
-  `BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`;
- 
-document.getElementById('adminFeeDetails').innerHTML =
- `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF
-  ${formatCurrencyValue(Record.originalAmount)}) <br/>
-RGD NTR HOLDING ACCOUNT`;
-
-document.getElementById('PVadminFeeAmount').textContent =
- ` ${formatCurrencyValue(adminFee)}`;
-
- document.getElementById('judicialServFeeDetails').innerHTML =
- `JUDICIAL SERVICE FEE `;
-
- document.getElementById('judicialServFeeAmount').textContent =
- ` GHS ${formatCurrencyValue(judicialFee)} `;
-  
-  PVamountAwarded.textContent = ` ${formatCurrencyValue(Record.balance)}`;
-  downAmount.textContent = ` GHS ${formatCurrencyValue(Record.balance)}`;
-  document.getElementById('chequeNames').innerHTML =  ` ${chequeNameHTML}`;
-  document.getElementById('chequeAmounts').innerHTML = ` ${chequeAmountHTML}`;
-
-  document.getElementById('retainedDetails').textContent = RetainedDetails;
-  document.getElementById('retainedAmount').textContent = `GHS${formatCurrencyValue(newBalance)}`;
-
-});
-
-
-  // Update fields
- document.getElementById('confirmSaveBtn').addEventListener('click', () => {
-  if (!pendingDisbursement) return;
-
-
-
-
-
-
-  const content = fs.readFileSync(dataFile, 'utf-8');
-  const lines = content.trim().split('\n');
-  const recordLine = lines[Record.lineIndex].split(',');
-
-  let disbursementCount = 0;
-  for (let i = 6; i < 206; i += 20) {
-    if (recordLine[i]?.trim()) disbursementCount++;
-    else break;
-  }
-
-  const newStartIndex = 6 + disbursementCount * 20;
-  if (newStartIndex + 20 > 205) {
-    result.textContent = "Maximum number of disbursements reached.";
-    document.getElementById('confirmationModal').style.display = 'none';
-    return;
-  }
-
-  const { pvNo, disburseDate, chequeData, chequeTotal, judicialFee, adminFee, newTotalDisbursed, newBalance } = pendingDisbursement;
-
-  recordLine[newStartIndex] = pvNo;
-  recordLine[newStartIndex + 1] = disburseDate;
-  for (let i = 0; i < 18; i++) {
-    recordLine[newStartIndex + 2 + i] = chequeData[i] || "";
-  }
-
-  recordLine[206] = (parseFloat(recordLine[206] || 0) + chequeTotal).toFixed(2);
-  recordLine[207] = (parseFloat(recordLine[207] || 0) + judicialFee).toFixed(2);
-  recordLine[208] = (parseFloat(recordLine[208] || 0) + adminFee).toFixed(2);
-  recordLine[209] = newTotalDisbursed.toFixed(2);
-  recordLine[210] = newBalance;
-
-  lines[Record.lineIndex] = recordLine.join(',');
-  fs.writeFileSync(dataFile, lines.join('\n'), 'utf-8');
-
-
-  // Build payment voucher content for display dal 
-
-  document.getElementById('confirmationModal').style.display = 'none';
- 
-  document.getElementById('paymentVoucher').style.display = 'none';
-  document.getElementById('paymentVoucher').style.display = 'block';
-
-  result.textContent = "Disbursement saved successfully.";
- 
-  pendingDisbursement = null;
-
-
-
-
-
-
-    // Push current disbursement to batch if admin fee > 0
-if (adminFee > 0) {
-  currentBatch.push({
-    name: Record.name,
-    awarded: Record.originalAmount,
-    adminFee: adminFee
-  });
-batchCount++;
-
-if (batchCount >= batchLimit) {
-  showBatchSummary();
-}
-
- 
-});
-// Close confirmation modal
-
-
-
-
-
-function showBatchSummary() {
-  if (currentBatch.length === 0) {
-    document.getElementById('batchSummaryContent').innerHTML = `<p>No pensioners in this batch had an admin fee.</p>`;
-  } else {
-    let totalAwarded = 0;
-    let totalAdminFee = 0;
-    let tableRows = currentBatch.map((entry, index) => {
-      totalAwarded += entry.awarded;
-      totalAdminFee += entry.adminFee;
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${entry.name}</td>
-          <td>GHS ${formatCurrencyValue(entry.awarded)}</td>
-          <td>GHS ${formatCurrencyValue(entry.adminFee)}</td>
-        </tr>
-      `;
-    }).join("");
-
-    document.getElementById('batchSummaryContent').innerHTML = `
-      <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Deceased Name</th>
-            <th>Amount Awarded</th>
-            <th>Admin Fee Charged</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${tableRows}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2"><strong>Totals</strong></td>
-            <td><strong>GHS ${formatCurrencyValue(totalAwarded)}</strong></td>
-            <td><strong>GHS ${formatCurrencyValue(totalAdminFee)}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
-    `;
-  }
-
-  document.getElementById('batchSummary').style.display = 'block';
-  document.getElementById('batchStatus').textContent = "Batch completed.";
-  batchLimit = 0;
-  batchCount = 0;
   currentBatch = [];
-}
+  batchCount = 0;
+  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} pensioners.`;
+});
+
+// Modal close buttons (add your own buttons in HTML)
+document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+  document.getElementById('confirmationModal').style.display = 'none';
+});
+document.getElementById('closeBatchSummaryBtn')?.addEventListener('click', () => {
+  document.getElementById('batchSummary').style.display = 'none';
+});

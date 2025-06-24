@@ -26,14 +26,14 @@ function printVoucherSection() {
     .a4Sheet {
       
       width: 210mm;
-      height: 297mm;
-      padding: 15mm 20mm;
+      height: 290mm;
+      padding: 11mm 20mm;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .pvContainer {
       width: 100%;
-      height: 100%;
+      height: 95%;
       display: grid;
       grid-template-rows: 1fr 6fr;
     }
