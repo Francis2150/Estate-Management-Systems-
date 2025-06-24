@@ -194,6 +194,44 @@ function updateLiveBalance() {
 
 
 
+
+
+
+// Initialize batch processing variables
+let currentBatch = [];
+let batchLimit = 0;
+let batchCount = 0;
+
+// Start batch session
+document.getElementById('startBatchBtn').addEventListener('click', () => {
+  batchLimit = parseInt(document.getElementById('batchCount').value) || 0;
+  if (batchLimit <= 0) {
+    document.getElementById('batchStatus').textContent = "Invalid batch size.";
+    return;
+  }
+
+  currentBatch = [];
+  batchCount = 0;
+  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} pensioners.`;
+});
+// Add current pensioner to batch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Event listeners
 
 
@@ -334,6 +372,11 @@ document.getElementById('PVadminFeeAmount').textContent =
  document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   if (!pendingDisbursement) return;
 
+
+
+
+
+
   const content = fs.readFileSync(dataFile, 'utf-8');
   const lines = content.trim().split('\n');
   const recordLine = lines[Record.lineIndex].split(',');
@@ -379,6 +422,79 @@ document.getElementById('PVadminFeeAmount').textContent =
   result.textContent = "Disbursement saved successfully.";
  
   pendingDisbursement = null;
+
+
+
+
+
+
+    // Push current disbursement to batch if admin fee > 0
+if (adminFee > 0) {
+  currentBatch.push({
+    name: Record.name,
+    awarded: Record.originalAmount,
+    adminFee: adminFee
+  });
+batchCount++;
+
+if (batchCount >= batchLimit) {
+  showBatchSummary();
+}
+
  
 });
 // Close confirmation modal
+
+
+
+
+
+function showBatchSummary() {
+  if (currentBatch.length === 0) {
+    document.getElementById('batchSummaryContent').innerHTML = `<p>No pensioners in this batch had an admin fee.</p>`;
+  } else {
+    let totalAwarded = 0;
+    let totalAdminFee = 0;
+    let tableRows = currentBatch.map((entry, index) => {
+      totalAwarded += entry.awarded;
+      totalAdminFee += entry.adminFee;
+      return `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${entry.name}</td>
+          <td>GHS ${formatCurrencyValue(entry.awarded)}</td>
+          <td>GHS ${formatCurrencyValue(entry.adminFee)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    document.getElementById('batchSummaryContent').innerHTML = `
+      <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Deceased Name</th>
+            <th>Amount Awarded</th>
+            <th>Admin Fee Charged</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"><strong>Totals</strong></td>
+            <td><strong>GHS ${formatCurrencyValue(totalAwarded)}</strong></td>
+            <td><strong>GHS ${formatCurrencyValue(totalAdminFee)}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    `;
+  }
+
+  document.getElementById('batchSummary').style.display = 'block';
+  document.getElementById('batchStatus').textContent = "Batch completed.";
+  batchLimit = 0;
+  batchCount = 0;
+  currentBatch = [];
+}

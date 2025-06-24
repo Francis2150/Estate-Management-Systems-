@@ -1,257 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Payment Voucher</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Calibri;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  
+  <!-- Custom stylesheet links -->
+  <link rel="stylesheet" href="../css-folder/payment.css"/>
+  <link rel="stylesheet" href="../css-folder/error.css"/>
+  <link rel="stylesheet" href="../css-folder/button.css"/>
+  <link rel="stylesheet" href="../css-folder/pvTemplate.css"/>
 
-    .a4Sheet {
-      width: 210mm;
-      height: 297mm;
-      padding: 12mm 10mm;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
+  <!-- JavaScript files for input validation and formatting -->
+  <script src="../java-script-folder/inputValidation.js"></script>
+  <script src="../java-script-folder/inputFormat.js"></script>
 
-    .pvContainer {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-rows: 1fr 6fr;
-    }
+  <title>Payment Page</title>
 
-    .header {
-      display: grid;
-      grid-template-rows: 2fr 1fr;
-    }
-
-    .topHeader {
-      display: grid;
-      grid-template-rows: 1fr 1fr 1fr;
-      row-gap: 0;
-      text-align: center;
-      font-weight: bolder;
-      font-size: 22px;
-      padding-bottom: 0;
-    }
-
-    .thirdP {
-      margin-bottom: 0;
-    }
-
-    .subHeader {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-    }
-
-    .body {
-      display: grid;
-      grid-template-rows: 1fr 3.5fr 3fr;
-      border: 2px solid #000;
-    }
-
-    .bodyHeader {
-      border-bottom: 2px solid #000;
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-    }
-
-    .bodyHeaderLeft {
-      display: grid;
-      grid-template-rows: 1fr 1.5fr;
-      border-right: 2px solid #000;
-    }
-
-    .particularsHeader {
-      display: flex;
-      border-bottom: 2px solid #000;
-      justify-content: center;
-      align-items: flex-end;
-      font-weight: bolder;
-    }
-
-    .bodyHeaderRight {
-      display: grid;
-      grid-template-rows: 1fr 1.5fr;
-    }
-
-    .amountHeader {
-      display: flex;
-      border-bottom: 2px solid #000;
-      justify-content: center;
-      align-items: flex-end;
-      font-weight: bolder;
-    }
-
-    .bodyMiddle {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      border-bottom: 2px solid #000;
-    }
-
-    .bodyMiddleLeft {
-      display: grid;
-      grid-template-columns: 2.5fr 1fr;
-      border-right: 2px solid #000;
-    }
-
-    .nameSide {
-      display: grid;
-      grid-template-rows: 1fr 7fr;
-      border-right: 2px solid #000;
-    }
-
-    .nameHeader {
-      display: flex;
-      border-bottom: 2px solid #000;
-      justify-content: center;
-      align-items: flex-end;
-      font-weight: bolder;
-    }
-
-    .namedetail {
-      display: grid;
-      grid-template-rows: 6fr 1fr;
-    }
-
-    .nameTop {
-      display: grid;
-      padding: 2mm;
-      grid-template-rows: 1.5fr 1fr 6fr 1.5fr;
-    }
-
-    .signatureSide {
-      display: grid;
-      grid-template-rows: 1fr 7fr;
-    }
-
-    .signatureHeader {
-      display: flex;
-      border-bottom: 2px solid #000;
-      justify-content: center;
-      align-items: flex-end;
-      font-weight: bolder;
-    }
-
-    .signatureDetail {
-      display: grid;
-      grid-template-rows: 6fr 1fr;
-    }
-
-    .bodyMiddleRight {
-      display: grid;
-      grid-template-rows: 1fr 7fr;
-    }
-
-    .MTspace {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      font-weight: bolder;
-    }
-
-    .chequeAmounts {
-      display: grid;
-      grid-template-rows: 6fr 1fr;
-    }
-
-    .amountTop {
-      padding: 2mm;
-      text-align: right;
-      display: grid;
-      grid-template-rows: 1.5fr 1fr 6fr 1.5fr;
-    }
-
-    .amountDown {
-      padding: 2mm;
-      text-align: right;
-      border-top: 2px solid #000;
-    }
-
-    .bodyDown {
-      display: grid;
-      grid-template-rows: 1fr 1.5fr 1fr 1fr;
-    }
-
-    .amountInWordsBox {
-      display: grid;
-      grid-template-columns: 1fr 7.7fr;
-      column-gap: 2mm;
-    }
-
-    .amountInWordsLabel {
-      padding-left: 2px;
-      display: flex;
-      text-align: center;
-      align-items: center;
-    }
-
-    .checkedByBox {
-      display: grid;
-      grid-template-columns: 0.8fr 1fr 0.8fr;
-      border-bottom: 2px solid #000;
-    }
-
-    .checkedByLeft,
-    .checkedByMid {
-      display: grid;
-      grid-template-rows: 1fr 1fr 1fr;
-      padding-left: 2px;
-      align-items: center;
-    }
-
-    .checkedByRight {
-      padding-top: 2mm;
-      padding-right: 2mm;
-    }
-
-    .approved {
-      font-weight: bolder;
-      height: 90%;
-      padding-top: 4px;
-      padding-left: 4px;
-      padding-right: 2px;
-      border: 2px solid #000;
-    }
-
-    .certifiedBox {
-      display: grid;
-      grid-template-columns: 2.5fr 1fr;
-      padding: 2px;
-      column-gap: 2mm;
-      border-bottom: 2px solid #000;
-    }
-
-    .witnessedByBox {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-    }
-
-    .witnessTOP {
-      text-align: center;
-    }
-
-    .witnessDown {
-      display: grid;
-      grid-template-columns: 1.5fr 1.2fr 1fr;
-      padding-left: 2px;
-      padding-right: 2px;
-      align-items: flex-end;
-    }
-  </style>
 </head>
-<body> <button onclick="printVoucherSection()">
+<body>
+  <main class="main-content">
+    <form id="paymentForm">
+
+      <!-- Top input section: general PV details -->
+      <div class="top-most-part">
+
+        <div class="pension-id">
+          <label for="pensionId">Pension ID</label>
+          <input type="text" id="pensionId" placeholder="Refer to report11" required />
+        </div>
+
+        <div class="pv-no">
+          <label for="pvNo">PV No:</label>
+          <input type="text" id="pvNo" placeholder="PV NO." required />
+        </div>
+
+        <div class="estate-type" style="flex: 1;">
+          <label for="estateType">Estate Type:</label>
+          <select id="estateType" required>
+            <option value="" disabled selected hidden>Select Estate Type</option>
+            <option value="Commuted pension">COMMUTED PENSION</option>
+            <option value="Death gratuity">DEATH GRATUITY</option>
+            <option value="Refund">REFUND</option>
+            <option value="Over Payment">OVER PAYMENT</option>
+            <option value="Retained portion released">RETAINED PORTION RELEASED</option>
+          </select>
+        </div>
+
+        <div class="checkby">
+          <label class="checked-by-label" for="checkedBy">Checked By:</label>
+          <select id="checkedBy" required>
+            <option value="DORIS DOWUONA">DORIS DOWUONA</option>
+            <option value="IVY BOATENG VIDA">IVY BOATENG VIDA</option>
+          </select>
+        </div>
+
+        <div class="date">
+          <label for="pvDate">Date:</label>
+          <input type="date" id="disburseDate" required />
+        </div>
+      </div>
+
+
+      <!-- Horizontal separator -->
+      <hr class="hr1" />
+
+
+      <!-- Middle section: Admin fee, fee amount, and estate status -->
+      <div class="master-middle-grid">
+
+        <div class="middle-grid-left">
+          <div>
+            <label for="judicialServiceFee">Judicial Serv. Fee:</label>
+            <input type="text" class="amountAwarded" data-type="currency" placeholder="enter amount GH₵" id="judicialServiceFee" />
+          </div>
+
+          <div class="administrativefee">
+            <label for="adminFeeRate">Admin Fee(rate):</label>
+            <select id="adminFeeRate" required>
+              <option value="" disabled selected hidden>Select rate(%)</option>
+              <option value="1.5">1.5</option>
+              <option value="None">None</option>
+              <option value="2">2</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+
+          <div class="fee-amount">
+            <label for="adminFeeAmount">ADMIN FEE:</label>
+            <div class="feebox" id="adminFeeAmount" data-display="currency"></div>
+          </div>
+        </div>
+
+        <div class="middle-grid-right">
+          <div></div>
+          <div class="search-status">
+            <label for="estateStatus">Estate Status:</label>
+            <div id="searchStatus"></div>
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+
+      <!-- Beneficiary cheque details -->
+      <div class="down-container">
+        <div class="cheques-section">
+          <h1>Beneficiaries</h1>
+
+          <!-- Up to 9 cheque entries -->
+          <!-- Each with a name and amount -->
+          <div class="cheque-pair">
+            <label for="cheque1">Cheque 1</label>
+            <input class="cheque-name" id="chequeName1" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount1" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque2">Cheque 2</label>
+            <input class="cheque-name" id="chequeName2" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount2" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque3">Cheque 3</label>
+            <input class="cheque-name" id="chequeName3" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount3" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque4">Cheque 4</label>
+            <input class="cheque-name" id="chequeName4" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount4" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque5">Cheque 5</label>
+            <input class="cheque-name" id="chequeName5" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount5" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque6">Cheque 6</label>
+            <input class="cheque-name" id="chequeName6" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount6" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque7">Cheque 7</label>
+            <input class="cheque-name" id="chequeName7" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount7" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque8">Cheque 8</label>
+            <input class="cheque-name" id="chequeName8" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount8" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <div class="cheque-pair">
+            <label for="cheque9">Cheque 9</label>
+            <input class="cheque-name" id="chequeName9" type="text" placeholder="Name(s)">
+            <span class="currency-symbol">GH₵</span>
+            <input class="cheque-amount" id="chequeAmount9" data-type="currency" type="text" placeholder="Amount">
+          </div>
+
+          <!-- Overlay Error Message -->
+          <div id="overlayError" class="overlay-error" style="display: none;">
+            <span class="close-btn" onclick="closeOverlayError()">❌</span>
+            <span id="overlayErrorMessage">Cannot proceed: Over Disbursement!</span>
+          </div>
+
+          <!-- Add/Remove cheque buttons -->
+          <div class="add-more-container" style="gap: 10px; align-items: center;">
+            <button class="add-btn" type="button" id="addChequeBtn">➕Cheques</button>
+            <button class="remove-btn" type="button" id="removeChequeBtn">➖ Remove</button>
+          </div>
+
+          <!-- Live balance display -->
+          <div class="live-balance">
+            <div class="live-balance-label">
+              <strong id="LiveBalancelable">
+                Live Bal :
+              </strong>
+          </div>
+            <div class="retain-details">
+              <input type="text" id="retainedDetail" placeholder="Retained Portion Details"/>
+            </div>
+            <div class="symbol">
+              GH₵
+            </div>
+            <div class="money">
+                <span  id="liveBalance" 
+                >0.00
+                </span>
+             </div>
+          </div>
+
+          <div id="result">confirmation /folder check</div>
+        </div>
+
+
+        <!-- Left details section -->
+        <div class="down-left">
+          <div class="detail">
+            <h3 class="detail-header">General Details</h3>
+            <div class="detail-cobtainer" id="pensioneerDetails">
+              <div>
+                <span class="detail-label">Deceased Name: </span>
+                <span class="Adetail" id="pensioneerName">Kwaku Manu Kankam</span>
+              </div>
+              <div>
+                <span class="detail-label">Amount Awarded:</span>
+                <span class="Adetail" id="amountAwarded" data-display="currency">250,2000.23</span>
+              </div>
+              <div>
+                <span class="detail-label">Total Paid(GH₵):</span>
+                <span class="Adetail" id="totalDisbursed" data-display="currency"></span>
+              </div>
+              <div>
+                <span class="detail-label">Balance(GH₵):</span>
+                <span class="Adetail" id="balance" data-display="currency"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom control buttons -->
+          <div class="button-container">
+            <button class="save" type="submit">Process</button>
+            <div class="home">
+              <a href="Ghome.html"><div>Home</div></a>
+            </div>
+            <button class="print" type="button" onclick="saveShowAndPrint()">Print</button>
+            
+          </div>
+        </div>
+      </div>
+    </form>
+  </main>
+
+
+  <!-- Confirmation Modal -->
+<div id="confirmationModal">
+  <div class="modal-content">
+    <h3 class="modal-header">Cross Check The Information  Below Before Confirmation</h3>
+    <div id="confirmationContent"></div>
+    <button id="confirmSaveBtn">Confirm</button>
+    <button id="cancelSaveBtn" onclick="document.getElementById('confirmationModal').style.display='none'">
+      ❌Cancel
+    </button>
+  </div>
+</div>
+
+
+
+<!----PV TEMPLATE AND DISPLAY SECTION-->
+
+
+
+
+<button onclick="printVoucherSection()">
       Print Voucher
     </button>
-  <section class="a4Sheet">
+  <section class="a4Sheet" id="paymentVoucher">
    
 
     <div class="pvContainer">
@@ -263,8 +281,8 @@
         </div>
         <div class="subHeader">
           <div class="subHeaderLeft">
-            <p>PV NO.</p>
-            <p>DATE :</p>
+            <p>PV NO.<span id="TpvNo"></span></p>
+            <p>DATE:<span id="TdisburseDate"></span></p>
           </div>
           <div class="subHeaderRight">
             <p>CHEQUE NO.</p>
@@ -276,13 +294,17 @@
         <div class="bodyHeader">
           <div class="bodyHeaderLeft">
             <div class="particularsHeader">PARTICULARS</div>
-            <div class="particularsDetails">
+            <div class="particularsDetails" id="narration">
               BEING COMMUTED PENSION AWARDED THE LATE FESTUS YAO EMMANUELA ADDISON DKAGI AS PER ATTACHED
             </div>
           </div>
           <div class="bodyHeaderRight">
             <div class="amountHeader">AMOUNT GH₵</div>
-            <div class="amountDetail"></div>
+            <div class="amountDetail" >GH₵
+              <span id="PVamountAwarded">
+                124,212,056.10
+              </span>
+            </div>
           </div>
         </div>
         <div class="bodyMiddle">
@@ -291,10 +313,12 @@
               <div class="nameHeader">NAME(S) OF PAYEE</div>
               <div class="namedetail">
                 <div class="nameTop">
-                  <div class="adminFeeDetails">ADMNISTRATIVE FEE</div>
-                  <div class="judicialServFeeDetails">JUDICIAL SERVICE FEE</div>
-                  <div class="chequeNames">CHEQUE NAMES</div>
-                  <div class="retainDetails">RETAINED AMOUNT</div>
+                  <div class="adminFeeDetails" id="adminFeeDetails">ADMNISTRATIVE FEE</div>
+                  <div class="judicialServFeeDetails" id="judicialServFeeDetails">
+                  JUDICIAL SERVICE FEE
+                </div>
+                  <div class="chequeNames" id="chequeNames">CHEQUE NAMES</div>
+                  <div class="retainDetails" id="retainedDetails">RETAINED AMOUNT</div>
                 </div>
                 <div class="nameDown"></div>
               </div>
@@ -311,19 +335,19 @@
             <div class="MTspace"></div>
             <div class="chequeAmounts">
               <div class="amountTop">
-                <div class="adminFeeAmount">GH₵664,220.10</div>
-                <div class="judicialServFeeAmount">GH₵137,220.10</div>
-                <div class="chequeAmount">GH₵234,220.10</div>
-                <div class="retainAmount">GH₵144,220.10</div>
+                <div class="adminFeeAmount" id="PVadminFeeAmount">GH₵664,220.10</div>
+                <div class="judicialServFeeAmount" id="judicialServFeeAmount">GH₵137,220.10</div>
+                <div class="chequeAmount" id="chequeAmounts">GH₵234,220.10</div>
+                <div class="retainAmount" id="retainedAmount">GH₵144,220.10</div>
               </div>
-              <div class="amountDown">GH₵124,220.10</div>
+              <div class="amountDown" id="downAmount">GH₵ 124,212,056.10</div>
             </div>
           </div>
         </div>
         <div class="bodyDown">
           <div class="amountInWordsBox">
             <div class="amountInWordsLabel">AMOUNT IN WORDS</div>
-            <div class="amountInWordsDetail">
+            <div class="amountInWordsDetail" id="amountInWords">
               ONE HUNDRED AND TWENTY FOUR MILLION, TWO HUNDRED AND FIFTEEN THOUSAND TWO HUNDRED AND TWENTY TWO GHANA CEDIS TEN PESWASE
             </div>
           </div>
@@ -334,9 +358,9 @@
               <p>DATE:</p>
             </div>
             <div class="checkedByMid">
-              <p>FRANCIS KWADZO AMUZU</p>
-              <p>SIGNED:</p>
-              <p>DATE:</p>
+              <p id="PvcheckedBy">FRANCIS KWADZO AMUZU</p>
+              <p></p>
+              <p id="downDate"></p>
             </div>
             <div class="checkedByRight">
               <p class="approved">APPROVED BY:</p>
@@ -359,7 +383,17 @@
     </div>
   </section>
 
-  
-   <script src="../java-script-folder/printVoucher.js"></script>
+
+ 
+
+
+  <!-- Scripts -->
+  <script src="../java-script-folder/navigation.js"></script>
+  <script src="../java-script-folder/cheqContrl.js"></script>
+  <script src="../java-script-folder/paymenttrial.js"></script>
+  <script src="../java-script-folder/printVoucher.js"></script>
+  <script src="../java-script-folder/currency.js"></script>
+
+
 </body>
 </html>

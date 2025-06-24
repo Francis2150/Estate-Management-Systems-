@@ -191,16 +191,7 @@
       
     }
 
-    .amountInWordsLabel {
-      
-   
-     
-    }
-    .amountInWordsDetail {
-      
-    
-    }
-
+  
     .checkedByBox {
       display: grid;
       grid-template-columns: 0.8fr 1fr 0.8fr;
@@ -252,4 +243,19 @@
       padding-left: 2px;
       padding-right: 2px;
       align-items: flex-end;
+    }
+
+    .everything{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      
+    }
+    #batchCount {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bolder;
+      width: 300px;
+      padding: 2mm;
+      text-align: center;
     }

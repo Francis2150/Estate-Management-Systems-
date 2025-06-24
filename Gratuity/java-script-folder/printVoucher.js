@@ -24,9 +24,10 @@ function printVoucherSection() {
   
 
     .a4Sheet {
+      
       width: 210mm;
       height: 297mm;
-      padding: 12mm 10mm;
+      padding: 15mm 20mm;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
