@@ -191,6 +191,7 @@ function printVoucherSection() {
     }
 
     .amountDown {
+    
       font-weight: bolder;
       padding: 2mm;
       text-align: right;
@@ -198,11 +199,13 @@ function printVoucherSection() {
     }
 
     .bodyDown {
+      
       display: grid;
       grid-template-rows: 1fr 1.5fr 1fr 1fr;
     }
 
     .amountInWordsBox {
+      padding-left: 4px;
       padding-top:12px ;
       display: flex;
       grid-template-columns: 1fr 7.6fr;
