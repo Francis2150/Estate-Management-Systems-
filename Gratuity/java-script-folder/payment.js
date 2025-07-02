@@ -1,46 +1,26 @@
-// ===========================
-// MODULE IMPORTS
-// ===========================
-const fs = require('fs'); // Node.js File System module for reading/writing CSV
-const path = require('path'); // Node.js module for path operations
-const os = require('os'); // Node.js module to get OS-specific info (e.g., home directory)
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
-
-// ===========================
-// UTILITY FUNCTION: Format Numbers as Currency
-// ===========================
+// Format number as currency (e.g., 1234.5 → "1,234.50")
 function formatCurrencyValue(value) {
   if (value == null || value === "") return "0.00";
-
-  // Remove commas and non-numeric characters except dot
   value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
-
   let parts = value.split(".");
   let integerPart = parts[0];
   let decimalPart = parts[1] || "";
-
-  // Format integer part with commas
   integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // Ensure 2 decimal places
   decimalPart = decimalPart.substring(0, 2);
   if (decimalPart.length === 1) decimalPart += "0";
   if (decimalPart.length === 0) decimalPart = "00";
-
   return `${integerPart}.${decimalPart}`;
 }
 
+// Paths for CSV file
+const dataFolder = path.join(os.homedir(), 'MyAppDataTwo');
+const dataFile = path.join(dataFolder, 'GRATUITY.csv');
 
-// ===========================
-// PATH DEFINITIONS
-// ===========================
-const dataFolder = path.join(os.homedir(), 'MyAppDataTwo'); // Directory for data
-const dataFile = path.join(dataFolder, 'GRATUITY.csv'); // CSV data file path
-
-
-// ===========================
-// DOM ELEMENT REFERENCES
-// ===========================
+// DOM Elements
 const form = document.getElementById('paymentForm');
 const searchIDInput = document.getElementById('pensionId');
 const pensionerDetailsDiv = document.getElementById('pensioneerDetails');
@@ -57,40 +37,33 @@ const liveBalanceDisplay = document.getElementById('liveBalance');
 const LiveBalancelable = document.getElementById('LiveBalancelable');
 const RetainedDetails = document.getElementById('retainedDetail').value;
 
-// Voucher display elements
+// pv template variables call
 const TpvNo = document.getElementById('TpvNo');
 const TdisburseDate = document.getElementById('TdisburseDate');
 const narrtion = document.getElementById('narrtion');
 const PVamountAwarded = document.getElementById('PVamountAwarded');
 const downAmount = document.getElementById('downAmount');
 const downDate = document.getElementById('downDate');
-const PvcheckedBy = document.getElementById('PvcheckedBy');
+const PvcheckedBy= document.getElementById('PvcheckedBy');
 
 
-// ===========================
-// STATE VARIABLES
-// ===========================
-let Record = null; // Holds currently selected pensioner record
-let isFirstDisbursement = false; // Track if this is first disbursement
 
 
-// ===========================
-// ERROR OVERLAY UTILITY FUNCTION
-// ===========================
+let Record = null;
+let isFirstDisbursement = false;
+
+// Show diagonal error overlay for 4 seconds
 function showErrorOverlay() {
   const overlay = document.getElementById('overlayError');
   if (overlay) {
     overlay.style.display = 'block';
     setTimeout(() => {
       overlay.style.display = 'none';
-    }, 400); // Show briefly
+    }, 400);
   }
 }
 
-
-// ===========================
-// DEBOUNCE FUNCTION TO LIMIT RAPID FIRING
-// ===========================
+// Debounce function for smoother input handling
 function debounce(func, wait) {
   let timeout;
   return function (...args) {
@@ -99,15 +72,10 @@ function debounce(func, wait) {
   };
 }
 
-
-// ===========================
-// SEARCH FUNCTION TO FIND PENSIONER
-// ===========================
+// Search pensioner by ID
 function searchPensioner() {
   const pensionID = searchIDInput.value.trim();
-
   if (!pensionID) {
-    // Clear UI when empty input
     status.textContent = "";
     adminFeeAmount.textContent = "";
     LiveBalancelable.textContent = "Live Balance:";
@@ -126,10 +94,8 @@ function searchPensioner() {
 
   for (let i = 1; i < lines.length; i++) {
     const row = lines[i].split(',');
-
     if (row[0] === pensionID) {
       const totalDisbursed = parseFloat(row[209]) || 0;
-
       Record = {
         id: row[0],
         name: row[1],
@@ -141,8 +107,6 @@ function searchPensioner() {
         lineIndex: i,
         rowData: row
       };
-
-      // Check if all 1st disbursement fields are empty
       isFirstDisbursement = row.slice(6, 26).every(cell => cell.trim() === '');
       break;
     }
@@ -166,37 +130,27 @@ function searchPensioner() {
   }
 }
 
-
-// ===========================
-// ADMIN FEE CALCULATION
-// ===========================
+// Recalculate admin fee based on estate type and rate
 function calculateAdminFee() {
   if (!Record) return;
-
   let rate = parseFloat(adminFeeRateInput.value);
   const estateType = EstateTypeInput.value.trim().toUpperCase();
   const excludedTypes = ["RETAINED PORTION RELEASED", "OVER PAYMENT", "REFUND"];
-
   if (excludedTypes.includes(estateType)) {
     adminFeeAmount.textContent = formatCurrencyValue(0);
     return;
   }
-
   if (isNaN(rate)) rate = 0;
-
   let fee = Record.originalAmount * (rate / 100);
-  fee = Math.round(fee * 100) / 100; // Round to 2 decimals
-
+  fee = Math.round(fee * 100) / 100;
   adminFeeAmount.textContent = formatCurrencyValue(fee);
 }
 
-
-// ===========================
-// CALCULATE LIVE BALANCE BASED ON FEES AND CHEQUES
-// ===========================
+// Calculate total disbursement and update live balance
 function updateLiveBalance() {
   if (!Record) return;
 
+  // Get inputs
   let judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
   let adminFee = parseFloat(adminFeeAmount.textContent.replace(/,/g, '')) || 0;
   let chequeTotal = 0;
@@ -209,21 +163,27 @@ function updateLiveBalance() {
     }
   }
 
+  // Calculate potential disbursement
   const potentialDisbursement = chequeTotal + judicialFee + adminFee;
   const updatedBalance = Record.balance - potentialDisbursement;
 
+  // Show error if balance exceeded
   const overlay = document.getElementById('overlayError');
   if (updatedBalance < 0) {
     const exceededAmount = formatCurrencyValue(Math.abs(updatedBalance));
     overlay.textContent = `❌ OVER PAYMENT BY GHS ${exceededAmount}`;
     overlay.style.display = 'block';
+
+    // Hide after 3 seconds
     setTimeout(() => {
       overlay.style.display = 'none';
     }, 7000);
   }
 
+  // Show live balance (never below 0)
   liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance < 0 ? 0 : updatedBalance);
 
+  // Update label
   const label = document.getElementById('LiveBalancelable');
   if (Record.originalAmount === updatedBalance) {
     label.textContent = "Unclaimed:";
@@ -233,34 +193,10 @@ function updateLiveBalance() {
 }
 
 
-// ===========================// ===========================
-// BATCH PROCESSING VARIABLES AND INITIALIZATION
-// ===========================
-let currentBatch = []; // List of pensioners in current batch
-let batchLimit = 0; // Limit for current batch size
-let batchCount = 0; // Count of pensioners added
+
+// Event listeners
 
 
-// ===========================
-// START NEW BATCH SESSION
-// ===========================
-document.getElementById('startBatchBtn').addEventListener('click', () => {
-  batchLimit = parseInt(document.getElementById('batchCount').value) || 0;
-
-  if (batchLimit <= 0) {
-    document.getElementById('batchStatus').textContent = "Invalid batch size.";
-    return;
-  }
-
-  currentBatch = [];
-  batchCount = 0;
-  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} pensioners.`;
-});
-
-
-// ===========================
-// EVENT LISTENERS FOR INPUTS
-// ===========================
 searchIDInput.addEventListener('input', debounce(searchPensioner, 300));
 document.getElementById('judicialServiceFee').addEventListener('input', updateLiveBalance);
 adminFeeRateInput.addEventListener('input', () => {
@@ -271,8 +207,6 @@ EstateTypeInput.addEventListener('input', () => {
   calculateAdminFee();
   updateLiveBalance();
 });
-
-// Attach update function to each cheque amount input
 for (let i = 1; i <= 9; i++) {
   const amountInput = document.getElementById(`chequeAmount${i}`);
   if (amountInput) {
@@ -280,10 +214,7 @@ for (let i = 1; i <= 9; i++) {
   }
 }
 
-
-// ===========================
-// SUBMIT FORM: HANDLE DISBURSEMENT SUBMISSION
-// ===========================
+// Submit form to save disbursement to CSV
 let pendingDisbursement = null;
 
 form.addEventListener('submit', (e) => {
@@ -294,7 +225,6 @@ form.addEventListener('submit', (e) => {
     return;
   }
 
-  const RetainedDetails = document.getElementById('retainedDetail').value;
   const disburseDate = document.getElementById('disburseDate').value;
   const pvNo = document.getElementById('pvNo').value.trim();
   const judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
@@ -304,6 +234,7 @@ form.addEventListener('submit', (e) => {
     result.textContent = "Please enter both the PV No and disbursement date.";
     return;
   }
+  
 
   let chequeNameHTML = '';
   let chequeAmountHTML = '';
@@ -311,7 +242,6 @@ form.addEventListener('submit', (e) => {
   let chequeTotal = 0;
   let chequeSummaryHTML = '';
 
-  // Gather cheque names/amounts
   for (let i = 1; i <= 9; i++) {
     const nameInput = document.getElementById(`chequeName${i}`);
     const amountInput = document.getElementById(`chequeAmount${i}`);
@@ -339,14 +269,14 @@ form.addEventListener('submit', (e) => {
     return;
   }
 
-  // Store pending disbursement for confirmation
+  // Save pending data to global var for confirmation
   pendingDisbursement = {
     pvNo, disburseDate, chequeData, chequeTotal, judicialFee, adminFee,
     newTotalDisbursed, newBalance
   };
 
-  // Show confirmation modal
-  document.getElementById('confirmationContent').innerHTML = `
+  // Build confirmation modal content
+  const confirmationContent = `
     <strong>PV No:</strong> ${pvNo}<br/>
     <strong>Deceased Name:</strong> ${Record.name}<br/>
     <strong>Disbursement Date:</strong> ${disburseDate}<br/>
@@ -357,47 +287,57 @@ form.addEventListener('submit', (e) => {
     <strong>Judicial Fee:</strong> GHS ${formatCurrencyValue(judicialFee)}<br/>
     <strong>Cheque Total:</strong> GHS ${formatCurrencyValue(chequeTotal)}<br/>
     <strong>Current Disbursement Total:</strong> GHS ${formatCurrencyValue(totalDisbursedAmount)}<br/>
+   
     <strong>Retained Portion:</strong> GHS ${formatCurrencyValue(newBalance)}<br/>
     <hr/>
     ${chequeSummaryHTML}
   `;
 
+  document.getElementById('confirmationContent').innerHTML = confirmationContent;
   document.getElementById('confirmationModal').style.display = 'flex';
 
-  // Set payment voucher preview details
+
+  // Hide payment voucher initially and set template variables
   document.getElementById('paymentVoucher').style.display = 'none';
   TpvNo.textContent = pvNo;
   TdisburseDate.textContent = disburseDate;
   downDate.textContent = disburseDate;
   document.getElementById('narration').textContent = 
-    `BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`;
+  `BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`;
  
-  document.getElementById('adminFeeDetails').innerHTML =
-    `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF ${formatCurrencyValue(Record.originalAmount)}) <br/>RGD NTR HOLDING ACCOUNT`;
+document.getElementById('adminFeeDetails').innerHTML =
+ `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF
+  ${formatCurrencyValue(Record.originalAmount)}) <br/>
+RGD NTR HOLDING ACCOUNT`;
 
-  document.getElementById('PVadminFeeAmount').textContent = ` ${formatCurrencyValue(adminFee)}`;
-  document.getElementById('judicialServFeeDetails').innerHTML = `JUDICIAL SERVICE FEE `;
-  document.getElementById('judicialServFeeAmount').textContent = ` GHS ${formatCurrencyValue(judicialFee)} `;
+document.getElementById('PVadminFeeAmount').textContent =
+ ` ${formatCurrencyValue(adminFee)}`;
+
+ document.getElementById('judicialServFeeDetails').innerHTML =
+ `JUDICIAL SERVICE FEE `;
+
+ document.getElementById('judicialServFeeAmount').textContent =
+ ` GHS ${formatCurrencyValue(judicialFee)} `;
+  
   PVamountAwarded.textContent = ` ${formatCurrencyValue(Record.balance)}`;
   downAmount.textContent = ` GHS ${formatCurrencyValue(Record.balance)}`;
-  document.getElementById('chequeNames').innerHTML = ` ${chequeNameHTML}`;
+  document.getElementById('chequeNames').innerHTML =  ` ${chequeNameHTML}`;
   document.getElementById('chequeAmounts').innerHTML = ` ${chequeAmountHTML}`;
+
   document.getElementById('retainedDetails').textContent = RetainedDetails;
   document.getElementById('retainedAmount').textContent = `GHS${formatCurrencyValue(newBalance)}`;
+
 });
 
 
-// ===========================
-// CONFIRM AND SAVE DISBURSEMENT TO CSV
-// ===========================
-document.getElementById('confirmSaveBtn').addEventListener('click', () => {
+  // Update fields
+ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   if (!pendingDisbursement) return;
 
   const content = fs.readFileSync(dataFile, 'utf-8');
   const lines = content.trim().split('\n');
   const recordLine = lines[Record.lineIndex].split(',');
 
-  // Find next disbursement slot (each disbursement uses 20 columns)
   let disbursementCount = 0;
   for (let i = 6; i < 206; i += 20) {
     if (recordLine[i]?.trim()) disbursementCount++;
@@ -411,7 +351,6 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
     return;
   }
 
-  // Fill in new disbursement data
   const { pvNo, disburseDate, chequeData, chequeTotal, judicialFee, adminFee, newTotalDisbursed, newBalance } = pendingDisbursement;
 
   recordLine[newStartIndex] = pvNo;
@@ -420,90 +359,26 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
     recordLine[newStartIndex + 2 + i] = chequeData[i] || "";
   }
 
-  // Update totals
-  recordLine[206] = (parseFloat(recordLine[206] || 0) + chequeTotal).toFixed(2); // Cheques
-  recordLine[207] = (parseFloat(recordLine[207] || 0) + judicialFee).toFixed(2); // Judicial Fee
-  recordLine[208] = (parseFloat(recordLine[208] || 0) + adminFee).toFixed(2); // Admin Fee
-  recordLine[209] = newTotalDisbursed.toFixed(2); // Total disbursed
-  recordLine[210] = newBalance; // Balance
+  recordLine[206] = (parseFloat(recordLine[206] || 0) + chequeTotal).toFixed(2);
+  recordLine[207] = (parseFloat(recordLine[207] || 0) + judicialFee).toFixed(2);
+  recordLine[208] = (parseFloat(recordLine[208] || 0) + adminFee).toFixed(2);
+  recordLine[209] = newTotalDisbursed.toFixed(2);
+  recordLine[210] = newBalance;
 
   lines[Record.lineIndex] = recordLine.join(',');
   fs.writeFileSync(dataFile, lines.join('\n'), 'utf-8');
 
+
+  // Build payment voucher content for display dal 
+
   document.getElementById('confirmationModal').style.display = 'none';
+ 
   document.getElementById('paymentVoucher').style.display = 'none';
   document.getElementById('paymentVoucher').style.display = 'block';
+
   result.textContent = "Disbursement saved successfully.";
+ 
   pendingDisbursement = null;
-
-  // Push to batch if admin fee charged
-  if (adminFee > 0) {
-    currentBatch.push({
-      name: Record.name,
-      awarded: Record.originalAmount,
-      adminFee: adminFee
-    });
-
-    batchCount++;
-    if (batchCount >= batchLimit) {
-      showBatchSummary();
-    }
-  }
+ 
 });
-
-
-// ===========================
-// DISPLAY BATCH SUMMARY TABLE
-// ===========================
-function showBatchSummary() {
-  if (currentBatch.length === 0) {
-    document.getElementById('batchSummaryContent').innerHTML = `<p>No pensioners in this batch had an admin fee.</p>`;
-  } else {
-    let totalAwarded = 0;
-    let totalAdminFee = 0;
-
-    const tableRows = currentBatch.map((entry, index) => {
-      totalAwarded += entry.awarded;
-      totalAdminFee += entry.adminFee;
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${entry.name}</td>
-          <td>GHS ${formatCurrencyValue(entry.awarded)}</td>
-          <td>GHS ${formatCurrencyValue(entry.adminFee)}</td>
-        </tr>
-      `;
-    }).join("");
-
-    document.getElementById('batchSummaryContent').innerHTML = `
-      <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Deceased Name</th>
-            <th>Amount Awarded</th>
-            <th>Admin Fee Charged</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${tableRows}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2"><strong>Totals</strong></td>
-            <td><strong>GHS ${formatCurrencyValue(totalAwarded)}</strong></td>
-            <td><strong>GHS ${formatCurrencyValue(totalAdminFee)}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
-    `;
-  }
-
-  document.getElementById('batchSummary').style.display = 'block';
-  document.getElementById('batchStatus').textContent = "Batch completed.";
-
-  // Reset batch
-  batchLimit = 0;
-  batchCount = 0;
-  currentBatch = [];
-}
+// Close confirmation modal

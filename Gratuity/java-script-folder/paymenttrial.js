@@ -56,15 +56,17 @@ const EstateTypeInput = document.getElementById('estateType');
 const liveBalanceDisplay = document.getElementById('liveBalance');
 const LiveBalancelable = document.getElementById('LiveBalancelable');
 const RetainedDetails = document.getElementById('retainedDetail').value;
+const checkedBy = document.getElementById('checkedBy');
 
 // Voucher display elements
 const TpvNo = document.getElementById('TpvNo');
 const TdisburseDate = document.getElementById('TdisburseDate');
-const narrtion = document.getElementById('narrtion');
+const narration = document.getElementById('narration');
 const PVamountAwarded = document.getElementById('PVamountAwarded');
 const downAmount = document.getElementById('downAmount');
 const downDate = document.getElementById('downDate');
 const PvcheckedBy = document.getElementById('PvcheckedBy');
+const PretainedDetails = document.getElementById('PretainedDetails');
 
 
 // ===========================
@@ -369,8 +371,9 @@ form.addEventListener('submit', (e) => {
   TpvNo.textContent = pvNo;
   TdisburseDate.textContent = disburseDate;
   downDate.textContent = disburseDate;
-  document.getElementById('narration').textContent = 
-    `BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`;
+  PvcheckedBy.textContent = checkedBy.value; 
+  narration.textContent = 
+    (`BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`).toUpperCase();
  
   document.getElementById('adminFeeDetails').innerHTML =
     `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF ${formatCurrencyValue(Record.originalAmount)}) <br/>RGD NTR HOLDING ACCOUNT`;
