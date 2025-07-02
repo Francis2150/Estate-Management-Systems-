@@ -173,24 +173,36 @@ function searchPensioner() {
 // ADMIN FEE CALCULATION
 // ===========================
 function calculateAdminFee() {
-  if (!Record) return;
+ 
 
-  let rate = parseFloat(adminFeeRateInput.value);
   const estateType = EstateTypeInput.value.trim().toUpperCase();
   const excludedTypes = ["RETAINED PORTION RELEASED", "OVER PAYMENT", "REFUND"];
 
   if (excludedTypes.includes(estateType)) {
-    adminFeeAmount.textContent = formatCurrencyValue(0);
+    adminFeeRateInput.value = "0";
+    
+     document.getElementById('adminFeeBox').style.display = 'none';
+     document.getElementById('feeAmountBox').style.display = 'none';
+     document.getElementById('adminFeeDetails').style.display = 'none';
+
+
     return;
   }
+  else{
+     document.getElementById('adminFeeBox').style.display = 'block';
+     document.getElementById('feeAmountBox').style.display = 'block';
+  }
 
+  let rate = parseFloat(adminFeeRateInput.value);
   if (isNaN(rate)) rate = 0;
 
   let fee = Record.originalAmount * (rate / 100);
-  fee = Math.round(fee * 100) / 100; // Round to 2 decimals
+  fee = Math.round(fee * 100) / 100;
 
   adminFeeAmount.textContent = formatCurrencyValue(fee);
+  
 }
+
 
 
 // ===========================
@@ -367,7 +379,7 @@ form.addEventListener('submit', (e) => {
   document.getElementById('confirmationModal').style.display = 'flex';
 
   // Set payment voucher preview details
-  document.getElementById('paymentVoucher').style.display = 'none';
+ 
   TpvNo.textContent = pvNo;
   TdisburseDate.textContent = disburseDate;
   downDate.textContent = disburseDate;

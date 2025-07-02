@@ -137,9 +137,19 @@ function printVoucherSection() {
       text-align: right;
     }
 
-    .namedetail {
+     .namedetail {
+      text-align: center;
       display: grid;
       grid-template-rows: 6fr 1fr;
+    }
+    
+    .retainDetailtittle{
+      text-align: center;
+      text-decoration: underline;
+    }
+    .retainDetailtittle,.retainDetails{
+      text-align: center;
+      
     }
 
     .nameTop {
@@ -180,14 +190,14 @@ function printVoucherSection() {
 
     .chequeAmounts {
       display: grid;
-      grid-template-rows: 6fr 1fr;
+      grid-template-rows: 7fr 1fr;
     }
 
-    .amountTop {
+     .amountTop {
       padding: 2mm;
       text-align: right;
       display: grid;
-      grid-template-rows: 1.5fr 1fr 6fr 1.5fr;
+      grid-template-rows: 1.5fr 1fr 6fr 1fr;
     }
 
     .amountDown {

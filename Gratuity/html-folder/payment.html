@@ -86,10 +86,11 @@
             </select>
           </div>
 
-          <div class="fee-amount">
-            <label for="adminFeeAmount">ADMIN FEE:</label>
-            <div class="feebox" id="adminFeeAmount" data-display="currency"></div>
+          <div class="fee-amount" id="feeAmountBox" style="display: block;">
+             <label for="adminFeeAmount">ADMIN FEE:</label>
+             <div class="feebox" id="adminFeeAmount" data-display="currency"></div>
           </div>
+
         </div>
 
         <div class="middle-grid-right">
@@ -209,7 +210,7 @@
         </div>
 
 
-        <!-- Left details section -->
+        <!-- General Details section -->
         <div class="down-left">
           <div class="detail">
             <h3 class="detail-header">General Details</h3>
@@ -235,12 +236,23 @@
 
           <!-- Bottom control buttons -->
           <div class="button-container">
-            <button class="save" type="submit">Process</button>
+
+            <button class="save" type="submit">
+              Process
+            </button>
+
             <div class="home">
               <a href="Ghome.html"><div>Home</div></a>
             </div>
-            <button class="print" type="button" onclick="saveShowAndPrint()">Print</button>
-            
+
+            <button class="print" type="button"  onclick="printVoucherSection()">
+              Print
+            </button>
+
+            <div class="Receipts">
+              <a href="report11.html"><div>Receipts</div></a>
+            </div>
+
           </div>
         </div>
       </div>
@@ -264,12 +276,6 @@
 
 <!----PV TEMPLATE AND DISPLAY SECTION-->
 
-
-
-
-<button onclick="printVoucherSection()">
-      Print Voucher
-    </button>
 
    
   <div class="everything"> 
@@ -306,7 +312,7 @@
             <div class="amountHeader">AMOUNT GH₵</div>
             <div class="amountDetail" >GH₵
               <span id="PVamountAwarded">
-                124,212,056.10
+               0.00
               </span>
             </div>
           </div>
@@ -317,12 +323,16 @@
               <div class="nameHeader">NAME(S) OF PAYEE</div>
               <div class="namedetail">
                 <div class="nameTop">
-                  <div class="adminFeeDetails" id="adminFeeDetails">ADMNISTRATIVE FEE</div>
+                  <div class="adminFeeDetails" id="adminFeeDetails" style="display: block;">ADMNISTRATIVE FEE</div>
                   <div class="judicialServFeeDetails" id="judicialServFeeDetails">
                   JUDICIAL SERVICE FEE
                 </div>
                   <div class="chequeNames" id="chequeNames">CHEQUE NAMES</div>
-                  <div class="retainDetails" id="PretainedDetails">RETAINED AMOUNT</div>
+                  <div class="retainDetails" >
+                    <div class="retainDetailtittle">RETAINED</div>
+                    <div id="PretainedDetails">TWO CHILD PORTION</div>
+                    
+                  </div>
                 </div>
                 <div class="nameDown"></div>
               </div>
@@ -339,12 +349,12 @@
             <div class="MTspace"></div>
             <div class="chequeAmounts">
               <div class="amountTop">
-                <div class="adminFeeAmount" id="PVadminFeeAmount">GH₵664,220.10</div>
+                <div class="adminFeeAmount" >GH₵<span id="PVadminFeeAmount">0.00</span></div>
                 <div class="judicialServFeeAmount" id="judicialServFeeAmount">GH₵137,220.10</div>
                 <div class="chequeAmount" id="chequeAmounts">GH₵234,220.10</div>
-                <div class="retainAmount" id="retainedAmount">GH₵144,220.10</div>
+                <div class="retainAmount" id="retainedAmount">GH₵0.00</div>
               </div>
-              <div class="amountDown" id="downAmount">GH₵ 124,212,056.10</div>
+              <div class="amountDown"><span id="downAmount">0.00</span></div>
             </div>
           </div>
         </div>
