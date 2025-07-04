@@ -272,7 +272,9 @@ document.getElementById('startBatchBtn').addEventListener('click', () => {
 
   currentBatch = [];
   batchCount = 0;
-  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} pensioners.`;
+  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} PVs.`;
+  document.getElementById('batchSetting').style.display = 'none';
+  document.getElementById('paymentForm').style.display = 'block';
 });
 
 
@@ -388,8 +390,9 @@ form.addEventListener('submit', (e) => {
   TdisburseDate.textContent = disburseDate;
   downDate.textContent = disburseDate;
   PvcheckedBy.textContent = checkedBy.value; 
+  // Set narration text
   narration.textContent = 
-    (`BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`).toUpperCase();
+    (`BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name} AS PER ATTACHED `).toUpperCase();
  
   document.getElementById('adminFeeDetails').innerHTML =
     `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF ${formatCurrencyValue(Record.originalAmount)}) <br/>RGD NTR HOLDING ACCOUNT`;
@@ -471,9 +474,8 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   fs.writeFileSync(dataFile, lines.join('\n'), 'utf-8');
 
   document.getElementById('confirmationModal').style.display = 'none';
-  document.getElementById('paymentVoucher').style.display = 'none';
-  document.getElementById('paymentVoucher').style.display = 'block';
-  result.textContent = "Disbursement saved successfully.";
+  form.reset();
+  result.textContent = "Processed successfully.";
   pendingDisbursement = null;
 
   // Push to batch if admin fee charged

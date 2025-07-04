@@ -19,7 +19,7 @@
 </head>
 <body>
   <main class="main-content">
-    <form id="paymentForm">
+    <form id="paymentForm" style="display: none;">
 
       <!-- Top input section: general PV details -->
       <div class="top-most-part">
@@ -96,8 +96,8 @@
         <div class="middle-grid-right">
           <div></div>
           <div class="search-status">
-            <label for="estateStatus">Estate Status:</label>
-            <div id="searchStatus"></div>
+            <label for="estateStatus">Batch Status:</label>
+           <span id="batchStatus"></span>
           </div>
           <div></div>
         </div>
@@ -279,7 +279,7 @@
 
    
   <div class="everything"> 
-  <section class="a4Sheet" id="paymentVoucher"  >
+  <section class="a4Sheet" id="paymentVoucher" style="display: none;" >
    
 
     <div class="pvContainer">
@@ -409,15 +409,24 @@
 
 
   <section>
-    <div>
-  <label for="batchCount">Batch Size (No. of Payments):</label>
-  <input type="number" id="batchCount" min="1" />
-  <button id="startBatchBtn">Start Batch</button>
-  <span id="batchStatus"></span>
+
+<div class="batch-setting" id="batchSetting" >
+  <label for="batchCount" class="batch-label">
+    Batch Size (No. of PVs):
+  </label>
+  <input type="number" id="batchCount" min="1"  placeholder="Enter number of PVs" required>
+  <div class="batch-btn-container">
+     <button id="startBatchBtn">Start Batch</button>
+  <div class="batch-back-btn">
+      <a href="Ghome.html"><div>BACK</div></a>
+  </div>
+  </div>
+ 
+
 </div>
 
 <!-- Optional: Printable Summary -->
-<div id="batchSummary" style="display: none; border: 1px solid gray; margin-top: 20px; padding: 10px;">
+<div id="batchSummary" style=" display:none; border: 1px solid black; margin-top: 20px; padding: 10px;">
   <h3>Batch Summary Report</h3>
   <div id="batchSummaryContent"></div>
   <button onclick="window.print()">Print Report</button>
