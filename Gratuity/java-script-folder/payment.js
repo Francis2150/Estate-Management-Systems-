@@ -173,24 +173,40 @@ function searchPensioner() {
 // ADMIN FEE CALCULATION
 // ===========================
 function calculateAdminFee() {
-  if (!Record) return;
+ 
 
-  let rate = parseFloat(adminFeeRateInput.value);
   const estateType = EstateTypeInput.value.trim().toUpperCase();
   const excludedTypes = ["RETAINED PORTION RELEASED", "OVER PAYMENT", "REFUND"];
 
   if (excludedTypes.includes(estateType)) {
-    adminFeeAmount.textContent = formatCurrencyValue(0);
-    return;
-  }
+  adminFeeRateInput.value = "0";
+  adminFeeRateInput.removeAttribute('required'); // 🔥 Remove required
+  document.getElementById('adminFeeBox').style.display = 'none';
+  document.getElementById('feeAmountBox').style.display = 'none';
 
+  document.getElementById('adminFeeDetails').style.visibility = 'hidden';
+
+  document.querySelector('.adminFeeAmount').style.visibility = 'hidden'; 
+  return;
+} else {
+  adminFeeRateInput.setAttribute('required', 'true'); // ✅ Re-add required for others
+  document.getElementById('adminFeeBox').style.display = 'block';
+  document.getElementById('feeAmountBox').style.display = 'block';
+  document.getElementById('adminFeeDetails').style.visibility = 'visible';
+  document.querySelector('.adminFeeAmount').style.visibility = 'visible';
+}
+
+
+  let rate = parseFloat(adminFeeRateInput.value);
   if (isNaN(rate)) rate = 0;
 
   let fee = Record.originalAmount * (rate / 100);
-  fee = Math.round(fee * 100) / 100; // Round to 2 decimals
+  fee = Math.round(fee * 100) / 100;
 
   adminFeeAmount.textContent = formatCurrencyValue(fee);
+  
 }
+
 
 
 // ===========================
@@ -367,7 +383,7 @@ form.addEventListener('submit', (e) => {
   document.getElementById('confirmationModal').style.display = 'flex';
 
   // Set payment voucher preview details
-  document.getElementById('paymentVoucher').style.display = 'none';
+ 
   TpvNo.textContent = pvNo;
   TdisburseDate.textContent = disburseDate;
   downDate.textContent = disburseDate;
@@ -379,14 +395,35 @@ form.addEventListener('submit', (e) => {
     `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF ${formatCurrencyValue(Record.originalAmount)}) <br/>RGD NTR HOLDING ACCOUNT`;
 
   document.getElementById('PVadminFeeAmount').textContent = ` ${formatCurrencyValue(adminFee)}`;
-  document.getElementById('judicialServFeeDetails').innerHTML = `JUDICIAL SERVICE FEE `;
-  document.getElementById('judicialServFeeAmount').textContent = ` GHS ${formatCurrencyValue(judicialFee)} `;
+
+  if (judicialFee === 0) {
+    document.getElementById('judicialServFeeAmount').style.visibility = 'hidden';
+    document.getElementById('judicialServFeeDetails').style.visibility = 'hidden';
+  } else {
+    // Show judicial service fee details if applicable
+    document.getElementById('judicialServFeeDetails').innerHTML = `JUDICIAL SERVICE FEE `;
+    document.getElementById('judicialServFeeAmount').textContent = ` GHS ${formatCurrencyValue(judicialFee)} `;
+    document.getElementById('judicialServFeeAmount').style.visibility = 'visible';
+    document.getElementById('judicialServFeeDetails').style.visibility = 'visible';
+  };
+ 
   PVamountAwarded.textContent = ` ${formatCurrencyValue(Record.balance)}`;
   downAmount.textContent = ` GHS ${formatCurrencyValue(Record.balance)}`;
   document.getElementById('chequeNames').innerHTML = ` ${chequeNameHTML}`;
   document.getElementById('chequeAmounts').innerHTML = ` ${chequeAmountHTML}`;
-  document.getElementById('retainedDetails').textContent = RetainedDetails;
-  document.getElementById('retainedAmount').textContent = `GHS${formatCurrencyValue(newBalance)}`;
+if (parseFloat(newBalance) === 0) {
+  document.getElementById('PretainedDetails').textContent = "";
+  document.getElementById('retainedAmount').textContent = "";
+  document.getElementById('retainDetailCONTAINER').style.display = 'none';
+  document.getElementById('retainedAmount').style.display = 'none';
+} else {
+  document.getElementById('PretainedDetails').textContent = RetainedDetails;
+  document.getElementById('retainedAmount').innerHTML = `GHS${formatCurrencyValue(newBalance)}`;
+  document.getElementById('retainDetailCONTAINER').style.display = 'block';
+  document.getElementById('retainedAmount').style.display = 'block';
+}
+
+ 
 });
 
 
