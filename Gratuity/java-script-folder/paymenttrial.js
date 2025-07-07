@@ -479,29 +479,30 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   result.textContent = "Processed successfully.";
   pendingDisbursement = null;
 
-  // Push to batch if admin fee charged
-  if (adminFee > 0) {
+ // Count every PV processed
+batchCount++;
 
-    console.log("✅ Record before push:", Record);
-    console.log("✅ adminFee:", adminFee);
+// Only add to batch summary if admin fee was charged
+if (adminFee > 0) {
+  currentBatch.push({
+    name: Record.name,
+    awarded: Record.originalAmount,
+    adminFee: adminFee
+  });
+}
 
-    currentBatch.push({
-      name: Record.name,
-      awarded: Record.originalAmount,
-      adminFee: adminFee
-    });
+// Check if batch is complete
+if (batchCount >= batchLimit) {
+  result.textContent = "Batch limit reached. Please Print Out the ADMINISTRATIVE FEE OF THIS BATCH.";
+  document.getElementById('batchStatus').textContent = "Batch completed.";
+  document.getElementById('paymentForm').style.display = 'none';
+}
 
-    batchCount++;
-     if (batchCount === batchLimit) {
-      result.textContent = "Batch limit reached. Please Print Out the ADMINISTRATIVE FEE OF THIS BATCH.";
-      document.getElementById('batchStatus').textContent = "Batch completed.";
-      document.getElementById('paymentForm').style.display = 'none';
-      return;
-    }
-     console.log("✔️ CONFIRMED SIDE Added to batch:", currentBatch);
-      showBatchSummary();
-    
-  }
+// Show summary only if there's at least one admin fee in batch
+if (currentBatch.length > 0) {
+  showBatchSummary();
+}
+
 });
 
 
@@ -559,7 +560,7 @@ function showBatchSummary() {
   }
 
   document.getElementById("batchSummary").style.display = "block";
-  document.getElementById("batchStatus").textContent = "Batch completed.";
+ 
 
 
   // Show controls (Print/Cancel)
