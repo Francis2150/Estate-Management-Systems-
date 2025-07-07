@@ -462,36 +462,40 @@ select {
 
  /* batch seting section css */
 .batch-setting {
-  display: inline-block;
-  align-items: center;
-  gap: 15px;
-  margin-top: 100px ;
-  margin-left: 400px;
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* <-- This centers it properly */
+  
   padding: 15px 20px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
   max-width: 800px;
   min-width: 800px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+
 .batch-label {
-  margin-bottom:10px ;
-text-align: center;
-  font-weight: 500;
+  
+  margin-bottom:18px ;
+  text-align: center;
+  font-weight: bold;
   font-size: 32px;
 }
 
-#batchCount input {
+#batchCount {
   width: 100px;
-  padding: 6px 10px;
-
+  height: 70px;
+  padding: 15px 10px; 
   font-size: 25px;
-  border: 1px solid #ccc;
+  border: 1px solid #160d0d;
   border-radius: 4px;
 }
+
 
 #startBatchBtn {
   margin-top: 30px;
@@ -542,4 +546,60 @@ text-align: center;
   grid-template-columns: 1fr 1fr; 
 
   margin-top: 20px;  
+}
+
+
+
+ /* <-- batch summary css */
+
+
+.table-container {
+  margin-top: 500PX;
+ background-color: aquamarine;
+  width: 260mm;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: block;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 1000px;
+} 
+.batch-header{
+  font-size: 20px;
+  text-align: center;
+  
+}
+
+
+.styled-table {
+  
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 15px;
+  width: 100%;
+  border: 1px solid #0a0606;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid hsla(0, 20%, 1%, 0.93);
+}
+.styled-table th {
+  font-size: 20px;
+  text-align: center;
+  
+}
+.styled-table thead {
+  font-size: 16px;
+  text-align: center;
+ 
+  font-weight: bolder;
+}
+
+.styled-table tfoot {
+
+  font-weight: bold;
 }

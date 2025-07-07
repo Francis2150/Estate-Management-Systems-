@@ -6,6 +6,7 @@ function printVoucherSection() {
   }
 
   // Clone the content
+  document.getElementById('paymentVoucher').style.display = 'block';
   const printContent = voucher.cloneNode(true);
 
   // Create a new print window

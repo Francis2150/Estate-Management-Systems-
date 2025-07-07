@@ -85,7 +85,7 @@ function showErrorOverlay() {
     overlay.style.display = 'block';
     setTimeout(() => {
       overlay.style.display = 'none';
-    }, 400); // Show briefly
+    }, 200); // Show briefly
   }
 }
 
@@ -110,7 +110,7 @@ function searchPensioner() {
 
   if (!pensionID) {
     // Clear UI when empty input
-    status.textContent = "";
+    
     adminFeeAmount.textContent = "";
     LiveBalancelable.textContent = "Live Balance:";
     liveBalanceDisplay.textContent = "0.00";
@@ -151,12 +151,12 @@ function searchPensioner() {
   }
 
   if (!Record) {
-    status.textContent = "No record found.";
+    result.textContent = "No record found.";
     adminFeeAmount.textContent = "0.00";
     liveBalanceDisplay.textContent = "0.00";
     pensionerDetailsDiv.style.display = 'none';
   } else {
-    status.textContent = "Record found successfully.";
+    result.textContent = "Record found successfully.";
     adminFeeAmount.textContent = "0.00";
     pensioneerName.textContent = ` ${Record.name}`;
     amountAwarded.textContent = formatCurrencyValue(Record.originalAmount);
@@ -237,7 +237,7 @@ function updateLiveBalance() {
     overlay.style.display = 'block';
     setTimeout(() => {
       overlay.style.display = 'none';
-    }, 7000);
+    }, 4000);
   }
 
   liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance < 0 ? 0 : updatedBalance);
@@ -273,7 +273,7 @@ document.getElementById('startBatchBtn').addEventListener('click', () => {
   currentBatch = [];
   batchCount = 0;
   document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} PVs.`;
-  document.getElementById('batchSetting').style.display = 'none';
+  document.getElementById('batchSetting').style.visibility = 'hidden';
   document.getElementById('paymentForm').style.display = 'block';
 });
 
@@ -318,7 +318,10 @@ form.addEventListener('submit', (e) => {
   const disburseDate = document.getElementById('disburseDate').value;
   const pvNo = document.getElementById('pvNo').value.trim();
   const judicialFee = parseFloat(document.getElementById('judicialServiceFee').value.replace(/,/g, '')) || 0;
-  const adminFee = parseFloat(adminFeeAmount.textContent.replace(/,/g, '')) || 0;
+  
+  let rate = parseFloat(adminFeeRateInput.value) || 0;
+  let adminFee = Math.round(Record.originalAmount * (rate / 100) * 100) / 100;
+
 
   if (!disburseDate || !pvNo) {
     result.textContent = "Please enter both the PV No and disbursement date.";
@@ -390,7 +393,6 @@ form.addEventListener('submit', (e) => {
   TdisburseDate.textContent = disburseDate;
   downDate.textContent = disburseDate;
   PvcheckedBy.textContent = checkedBy.value; 
-  // Set narration text
   narration.textContent = 
     (`BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name} AS PER ATTACHED `).toUpperCase();
  
@@ -448,7 +450,7 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   }
 
   const newStartIndex = 6 + disbursementCount * 20;
-  if (newStartIndex + 20 > 205) {
+  if (newStartIndex + 20 > 206) {
     result.textContent = "Maximum number of disbursements reached.";
     document.getElementById('confirmationModal').style.display = 'none';
     return;
@@ -474,12 +476,16 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   fs.writeFileSync(dataFile, lines.join('\n'), 'utf-8');
 
   document.getElementById('confirmationModal').style.display = 'none';
-  form.reset();
+ 
   result.textContent = "Processed successfully.";
   pendingDisbursement = null;
 
   // Push to batch if admin fee charged
   if (adminFee > 0) {
+
+    console.log("✅ Record before push:", Record);
+    console.log("✅ adminFee:", adminFee);
+
     currentBatch.push({
       name: Record.name,
       awarded: Record.originalAmount,
@@ -487,65 +493,91 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
     });
 
     batchCount++;
-    if (batchCount >= batchLimit) {
-      showBatchSummary();
+     if (batchCount === batchLimit) {
+      result.textContent = "Batch limit reached. Please Print Out the ADMINISTRATIVE FEE OF THIS BATCH.";
+      document.getElementById('batchStatus').textContent = "Batch completed.";
+      document.getElementById('paymentForm').style.display = 'none';
+      return;
     }
+     console.log("✔️ CONFIRMED SIDE Added to batch:", currentBatch);
+      showBatchSummary();
+    
   }
 });
+
 
 
 // ===========================
 // DISPLAY BATCH SUMMARY TABLE
 // ===========================
-function showBatchSummary() {
-  if (currentBatch.length === 0) {
-    document.getElementById('batchSummaryContent').innerHTML = `<p>No pensioners in this batch had an admin fee.</p>`;
-  } else {
-    let totalAwarded = 0;
-    let totalAdminFee = 0;
+function formatCurrencyValue(value) {
+  if (value == null || value === "") return "0.00";
+  value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
+  let parts = value.split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (parts.length === 1) parts.push("00");
+  else parts[1] = parts[1].padEnd(2, "0").slice(0, 2);
+  return parts.join(".");
+}
 
-    const tableRows = currentBatch.map((entry, index) => {
+function showBatchSummary() {
+  const tableBody = document.getElementById("summaryTableBody");
+  const totalAwardedCell = document.getElementById("totalAwarded");
+  const totalAdminFeeCell = document.getElementById("totalAdminFee");
+  const emptyMessage = document.getElementById("emptyBatchMessage");
+  const controls = document.getElementById("controls");
+
+  tableBody.innerHTML = "";
+  let totalAwarded = 0;
+  let totalAdminFee = 0;
+
+  if (currentBatch.length === 0) {
+    emptyMessage.style.display = "block";
+    totalAwardedCell.innerHTML = "<strong>GHS 0.00</strong>";
+    totalAdminFeeCell.innerHTML = "<strong>GHS 0.00</strong>";
+  } else {
+    emptyMessage.style.display = "none";
+
+    currentBatch.forEach((entry, index) => {
+      const row = document.createElement("tr");
+
+      const numberCell = document.createElement("td");
+      numberCell.textContent = index + 1;
+
+      const nameCell = document.createElement("td");
+      nameCell.textContent = entry.name;
+
+      const awardedCell = document.createElement("td");
+      awardedCell.textContent = ` ${formatCurrencyValue(entry.awarded)}`;
+
+      const feeCell = document.createElement("td");
+      feeCell.textContent = ` ${formatCurrencyValue(entry.adminFee)}`;
+
+      row.appendChild(numberCell);
+      row.appendChild(nameCell);
+      row.appendChild(awardedCell);
+      row.appendChild(feeCell);
+
+      tableBody.appendChild(row);
+
       totalAwarded += entry.awarded;
       totalAdminFee += entry.adminFee;
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${entry.name}</td>
-          <td>GHS ${formatCurrencyValue(entry.awarded)}</td>
-          <td>GHS ${formatCurrencyValue(entry.adminFee)}</td>
-        </tr>
-      `;
-    }).join("");
+    });
 
-    document.getElementById('batchSummaryContent').innerHTML = `
-      <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Deceased Name</th>
-            <th>Amount Awarded</th>
-            <th>Admin Fee Charged</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${tableRows}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2"><strong>Totals</strong></td>
-            <td><strong>GHS ${formatCurrencyValue(totalAwarded)}</strong></td>
-            <td><strong>GHS ${formatCurrencyValue(totalAdminFee)}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
-    `;
+    totalAwardedCell.innerHTML = `<strong>GHS ${formatCurrencyValue(totalAwarded)}</strong>`;
+    totalAdminFeeCell.innerHTML = `<strong>GHS ${formatCurrencyValue(totalAdminFee)}</strong>`;
   }
 
-  document.getElementById('batchSummary').style.display = 'block';
-  document.getElementById('batchStatus').textContent = "Batch completed.";
+  document.getElementById("batchSummary").style.display = "block";
+  document.getElementById("batchStatus").textContent = "Batch completed.";
 
-  // Reset batch
-  batchLimit = 0;
-  batchCount = 0;
-  currentBatch = [];
+
+  // Show controls (Print/Cancel)
+  if (controls) controls.style.display = "block";
+console.log("✔️DISPLAY  SIDE Added to batch:", currentBatch);
+
 }
+
+
+
+   

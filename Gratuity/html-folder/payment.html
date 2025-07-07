@@ -19,7 +19,7 @@
 </head>
 <body>
   <main class="main-content">
-    <form id="paymentForm" style="display: none;">
+    <form id="paymentForm" style="display:none;">
 
       <!-- Top input section: general PV details -->
       <div class="top-most-part">
@@ -253,6 +253,12 @@
               <a href="report11.html"><div>Receipts</div></a>
             </div>
 
+            <button class="adminfee" type="button"  onclick="startProcess()">
+              Admin Fee
+            </button>
+      
+
+             
           </div>
         </div>
       </div>
@@ -410,27 +416,79 @@
 
   <section>
 
-<div class="batch-setting" id="batchSetting" >
-  <label for="batchCount" class="batch-label">
-    Batch Size (No. of PVs):
-  </label>
-  <input type="number" id="batchCount" min="1"  placeholder="Enter number of PVs" required>
-  <div class="batch-btn-container">
-     <button id="startBatchBtn">Start Batch</button>
-  <div class="batch-back-btn">
-      <a href="Ghome.html"><div>BACK</div></a>
-  </div>
-  </div>
- 
+    
+    <!-- Batch Setting Section -->
+      <div class="batch-setting" id="batchSetting"  >
+        <label for="batchCount" class="batch-label">
+          Batch Size (No. of PVs):
+        </label>
+        <input type="number" id="batchCount" min="1"  placeholder="Enter number of PVs" required>
+        <div class="batch-btn-container">
+          <button id="startBatchBtn">Start Batch</button>
+        <div class="batch-back-btn">
+            <a href="Ghome.html">
+              <div>
+                BACK
+              </div>
+            </a>
+        </div>
+       </div>
+    </div>
 
-</div>
+<!-- batch Printable Summary -->
+      <section>
+      <div class="table-container">
+      <div id="batchSummary" >
+        <h3 class="batch-header">REGISTRAR GENERAL’S DEPARTMENT <br>1.5% ADMINISTRATIVE FEE</h3>
 
-<!-- Optional: Printable Summary -->
-<div id="batchSummary" style=" display:none; border: 1px solid black; margin-top: 20px; padding: 10px;">
-  <h3>Batch Summary Report</h3>
-  <div id="batchSummaryContent"></div>
-  <button onclick="window.print()">Print Report</button>
-</div>
+
+        <div id="batchSummaryContent">
+          <table id="summaryTable" class="styled-table">
+
+                <colgroup>
+                  <col style="width: 6%;">   <!-- No. -->
+                  <col style="width: 50%;">   <!-- Deceased Name -->
+                  <col style="width: 20%;">   <!-- Amount Awarded -->
+                  <col style="width: 20%;">   <!-- Admin Fee Charged -->
+                </colgroup>
+
+
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Deceased Name</th>
+                <th>Amount Awarded</th>
+                <th>Admin Fee Charged</th>
+              </tr>
+            </thead>
+            <tbody id="summaryTableBody">
+              <!-- Rows will be inserted here -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"><strong>Totals</strong></td>
+                <td id="totalAwarded"><strong>GHS 0.00</strong></td>
+                <td id="totalAdminFee"><strong>GHS 0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+          <p id="emptyBatchMessage" style="display:none;">No pensioners in this batch had an admin fee.</p>
+        </div>
+
+
+         <div id="controls" style="display:none; margin-top: 10px;">
+          <button  type="button" onclick="printAdminFee()">Print</button>
+          <button onclick="cancelProcess()">Cancel</button>
+        </div>
+     
+      </div>
+      
+      </div>
+
+        
+      </section>
+
+
 
   </section>
 </div> 
@@ -440,6 +498,7 @@
   <script src="../java-script-folder/cheqContrl.js"></script>
   <script src="../java-script-folder/paymenttrial.js"></script>
   <script src="../java-script-folder/printVoucher.js"></script>
+  <script src="../java-script-folder/print1.js"></script>
   <script src="../java-script-folder/currency.js"></script>
 
 

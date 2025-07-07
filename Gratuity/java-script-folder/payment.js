@@ -85,7 +85,7 @@ function showErrorOverlay() {
     overlay.style.display = 'block';
     setTimeout(() => {
       overlay.style.display = 'none';
-    }, 400); // Show briefly
+    }, 200); // Show briefly
   }
 }
 
@@ -110,7 +110,7 @@ function searchPensioner() {
 
   if (!pensionID) {
     // Clear UI when empty input
-    status.textContent = "";
+    
     adminFeeAmount.textContent = "";
     LiveBalancelable.textContent = "Live Balance:";
     liveBalanceDisplay.textContent = "0.00";
@@ -237,7 +237,7 @@ function updateLiveBalance() {
     overlay.style.display = 'block';
     setTimeout(() => {
       overlay.style.display = 'none';
-    }, 7000);
+    }, 4000);
   }
 
   liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance < 0 ? 0 : updatedBalance);
@@ -272,7 +272,7 @@ document.getElementById('startBatchBtn').addEventListener('click', () => {
 
   currentBatch = [];
   batchCount = 0;
-  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} pensioners.`;
+  document.getElementById('batchStatus').textContent = `Batch started for ${batchLimit} PVs.`;
 });
 
 
@@ -389,7 +389,7 @@ form.addEventListener('submit', (e) => {
   downDate.textContent = disburseDate;
   PvcheckedBy.textContent = checkedBy.value; 
   narration.textContent = 
-    (`BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name}`).toUpperCase();
+    (`BEING ${EstateTypeInput.value} AWARDED THE LATE ${Record.name} AS PER ATTACHED`).toUpperCase();
  
   document.getElementById('adminFeeDetails').innerHTML =
     `LESS ADMINISTRATIVE FEE (${adminFeeRateInput.value}% OF ${formatCurrencyValue(Record.originalAmount)}) <br/>RGD NTR HOLDING ACCOUNT`;
@@ -445,7 +445,7 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
   }
 
   const newStartIndex = 6 + disbursementCount * 20;
-  if (newStartIndex + 20 > 205) {
+  if (newStartIndex + 20 > 206) {
     result.textContent = "Maximum number of disbursements reached.";
     document.getElementById('confirmationModal').style.display = 'none';
     return;
