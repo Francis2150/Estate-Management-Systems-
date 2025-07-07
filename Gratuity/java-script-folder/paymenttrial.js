@@ -55,7 +55,6 @@ const adminFeeRateInput = document.getElementById('adminFeeRate');
 const EstateTypeInput = document.getElementById('estateType');
 const liveBalanceDisplay = document.getElementById('liveBalance');
 const LiveBalancelable = document.getElementById('LiveBalancelable');
-const RetainedDetails = document.getElementById('retainedDetail').value;
 const checkedBy = document.getElementById('checkedBy');
 
 // Voucher display elements
@@ -510,15 +509,6 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
 // ===========================
 // DISPLAY BATCH SUMMARY TABLE
 // ===========================
-function formatCurrencyValue(value) {
-  if (value == null || value === "") return "0.00";
-  value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
-  let parts = value.split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  if (parts.length === 1) parts.push("00");
-  else parts[1] = parts[1].padEnd(2, "0").slice(0, 2);
-  return parts.join(".");
-}
 
 function showBatchSummary() {
   const tableBody = document.getElementById("summaryTableBody");
