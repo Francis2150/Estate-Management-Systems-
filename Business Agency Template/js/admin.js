@@ -1,6 +1,6 @@
 function checkAdmin() {
   const input = document.getElementById("adminPass").value;
-  if (input === "admin123") {
+  if (input === "1") {
     document.getElementById("login-section").style.display = "none";
     document.getElementById("admin-section").style.display = "block";
     loadAdminProducts();
