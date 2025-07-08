@@ -1,0 +1,71 @@
+/* ===== Store Page Styles ===== */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #fffafc;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background: #ff3399;
+  padding: 1rem 2rem;
+  color: white;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+}
+.logo {
+  font-weight: bold;
+}
+.store-section, .cart-section, .order-form {
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
+}
+h2 {
+  margin-bottom: 1rem;
+  color: #cc0066;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.product {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 5px #ccc;
+}
+.product img {
+  max-width: 100%;
+}
+input[type="number"], input[type="text"], input[type="email"], input[type="tel"] {
+  padding: 0.5rem;
+  margin: 0.3rem 0;
+  width: 100%;
+}
+.btn {
+  background: #cc0066;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+.btn:hover {
+  background: #99004d;
+}
+#cart-items div {
+  margin-bottom: 0.6rem;
+}

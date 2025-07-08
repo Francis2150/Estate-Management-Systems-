@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin | Footwear Hub</title>
+  <link rel="stylesheet" href="style-admin.css" />
+
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">👠 Admin Panel</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="store.html">Store</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 🔐 Login -->
+  <section id="login-section" class="info-section">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPass" placeholder="Enter admin password">
+    <button class="btn" onclick="checkAdmin()">Login</button>
+    <p id="login-msg"></p>
+  </section>
+
+  <!-- 👩‍💼 Admin Dashboard -->
+  <section id="admin-section" class="info-section" style="display: none;">
+    <h2>Product Management</h2>
+
+    <!-- ➕ Add Product -->
+    <form id="productForm">
+      <input type="text" id="prodName" placeholder="Product Name" required><br>
+      <input type="text" id="prodImage" placeholder="Image URL" required><br>
+      <input type="number" id="prodPrice" placeholder="Price" required><br>
+      <textarea id="prodDesc" placeholder="Description"></textarea><br>
+      <button type="submit" class="btn">Add Product</button>
+    </form>
+
+    <hr>
+
+    <!-- 📄 Product List -->
+    <h3>Current Products</h3>
+    <div id="productTable"></div>
+
+    <hr>
+
+    <!-- 🔔 Order Notifications -->
+    <h3>Recent Orders</h3>
+    <div id="order-notifications">
+      <p><em>WhatsApp notifications are sent directly when order is placed. (Simulation)</em></p>
+    </div>
+  </section>
+
+  <!-- ✅ Load shared.js FIRST -->
+<script src="js/shared.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+/* ===== Reset and Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  background: linear-gradient(to right, #ffe6f0, #fff);
+  color: #333;
+  padding: 0;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ff4da6;
+  padding: 1rem 2rem;
+  color: #fff;
+}
+.navbar .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+.navbar .nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.navbar .nav-links li a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Hero Section ===== */
+.hero {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fff0f5, #ffd6e8);
+  text-align: center;
+  animation: bgShift 8s infinite alternate;
+}
+@keyframes bgShift {
+  0% { background: #ffe6f0; }
+  100% { background: #fff0f5; }
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  color: #cc0066;
+  margin-bottom: 1rem;
+}
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+.btn {
+  background-color: #cc0066;
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.btn:hover {
+  background-color: #99004d;
+}
+
+/* ===== Marquee ===== */
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: #ff80bf;
+  color: white;
+  padding: 0.5rem 0;
+  font-weight: bold;
+  animation: scrollText 15s linear infinite;
+}
+@keyframes scrollText {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ===== Info Sections ===== */
+.info-section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.info-section h2 {
+  color: #cc0066;
+  margin-bottom: 1rem;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #ff4da6;
+  color: white;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  .navbar .nav-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+
+
+
+/* ===== Store Page Styles ===== */
+.store-section, .cart-section, .order-form {
+  padding: 2rem;
+  text-align: center;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.product {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #fff0f5;
+}
+.product img {
+  max-width: 100%;
+  height: auto;
+}
+.product h3 {
+  color: #cc0066;
+}
+.product p {
+  font-size: 0.9rem;
+}
+.cart-section #cart-items {
+  margin: 1rem 0;
+}
+#cart-items div {
+  margin-bottom: 0.5rem;
+}
+#cart-total {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.order-form form input {
+  padding: 0.6rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1rem;
+}
+
+
+
+
+
+
+/* ===== Admin Section Styles ===== */
+#productForm input, #productForm textarea {
+  width: 90%;
+  padding: 0.6rem;
+  margin-bottom: 0.8rem;
+  max-width: 500px;
+}
+#productTable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+#productTable th, #productTable td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+#productTable th {
+  background-color: #ffb3d9;
+}
