@@ -224,7 +224,7 @@ function printVoucherSection() {
     }
 
     .amountInWordsLabel {
-      
+      margin-right:1mm;
    
      
     }
