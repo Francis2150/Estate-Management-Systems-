@@ -478,7 +478,7 @@ document.getElementById('confirmSaveBtn').addEventListener('click', () => {
  
   result.textContent = "Processed successfully.";
   pendingDisbursement = null;
-
+  printVoucherSection()
  // Count every PV processed
 batchCount++;
 
