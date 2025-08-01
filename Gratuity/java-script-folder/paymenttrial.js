@@ -8,12 +8,15 @@ const os = require('os'); // Node.js module to get OS-specific info (e.g., home 
 
 // ===========================
 // UTILITY FUNCTION: Format Numbers as Currency
-// ===========================
 function formatCurrencyValue(value) {
   if (value == null || value === "") return "0.00";
 
-  // Remove commas and non-numeric characters except dot
-  value = value.toString().replace(/,/g, "").replace(/[^\d.]/g, "");
+  // Preserve negative sign, remove other non-numeric chars except dot
+  value = value.toString().replace(/,/g, "").replace(/[^\d.-]/g, "");
+
+  // Handle negative values
+  const isNegative = value.startsWith("-");
+  if (isNegative) value = value.substring(1); // Remove '-' temporarily
 
   let parts = value.split(".");
   let integerPart = parts[0];
@@ -27,7 +30,8 @@ function formatCurrencyValue(value) {
   if (decimalPart.length === 1) decimalPart += "0";
   if (decimalPart.length === 0) decimalPart = "00";
 
-  return `${integerPart}.${decimalPart}`;
+  // Re-add negative sign if needed
+  return isNegative ? `-${integerPart}.${decimalPart}` : `${integerPart}.${decimalPart}`;
 }
 
 
@@ -236,14 +240,24 @@ function updateLiveBalance() {
     overlay.style.display = 'block';
     setTimeout(() => {
       overlay.style.display = 'none';
-    }, 4000);
+    }, 400);
   }
 
-  liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance < 0 ? 0 : updatedBalance);
+  // Show the actual balance (negative if overpayment)
+  liveBalanceDisplay.textContent = formatCurrencyValue(updatedBalance);
+
+  // Add/remove negative styling (place this RIGHT AFTER updating the text content)
+  if (updatedBalance < 0) {
+    liveBalanceDisplay.classList.add('-');
+  } else {
+    liveBalanceDisplay.classList.remove('-');
+  }
 
   const label = document.getElementById('LiveBalancelable');
   if (Record.originalAmount === updatedBalance) {
     label.textContent = "Unclaimed:";
+  } else if (updatedBalance < 0) {
+    label.textContent = "Overpaid:";
   } else {
     label.textContent = "Retain :";
   }

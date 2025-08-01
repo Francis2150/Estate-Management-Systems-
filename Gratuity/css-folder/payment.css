@@ -603,3 +603,8 @@ select {
 
   font-weight: bold;
 }
+
+/* More specific selector if needed */
+.live-balance .money span.negative {
+  color: red;
+}
